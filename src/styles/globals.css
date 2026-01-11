@@ -85,6 +85,12 @@
     2xl:text-4xl;
 }
 
+@utility font-size-2xl {
+  @apply text-lg
+    lg:text-xl
+    2xl:text-2xl;
+}
+
 @utility font-size-xl {
   @apply text-base
     lg:text-lg
@@ -97,8 +103,35 @@
     2xl:text-lg;
 }
 
+@utility font-size-sm {
+  @apply text-xs
+    2xl:text-sm;
+}
+
 @utility card {
   @apply bg-[var(--card-background)] rounded-xl border border-[var(--background-button)] p-6;
+}
+
+@utility select-filter {
+  @apply font-inter rounded-full bg-background px-2 py-2 font-size-sm text-primary-color outline-none focus:border-blue-500;
+}
+
+@utility table-header {
+  @apply font-montserrat font-size-sm text-white/70 py-3 px-4 font-normal;
+}
+
+@utility cell-table-semibold {
+  @apply font-montserrat font-size-sm text-white font-semibold text-xs
+    2xl:text-sm;
+}
+
+@utility cell-table-normal {
+  @apply font-montserrat font-size-sm text-white  font-normal text-xs
+    2xl:text-sm;
+}
+
+@utility cell-table-pill {
+  @apply font-montserrat font-medium text-xs py-1 px-2 text-[var(--bg-background)] rounded-full;
 }
 
 body {

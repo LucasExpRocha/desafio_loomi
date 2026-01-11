@@ -114,7 +114,7 @@ export default function MapaClientes() {
         ref={mapRef}
         className="h-[200px] 2xl:h-[260px] w-full rounded-xl overflow-hidden shadow-inner bg-[#0a0f1c] relative"
       >
-        <div className="absolute inset-0 pointer-events-none bg-blue-900/10 z-[1] mix-blend-overlay" />
+        <div className="absolute inset-0 pointer-events-none bg-blue-900/10 mix-blend-overlay" />
       </div>
     </div>
   )

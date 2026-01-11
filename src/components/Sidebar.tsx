@@ -35,7 +35,7 @@ const listNavigation = [
     id: 'plan',
     label: 'Plan',
     icon: '/svgs/plan.svg',
-    href: '/simulador-de-planos'
+    href: '/simulador-de-plano'
   },
 ]
 
