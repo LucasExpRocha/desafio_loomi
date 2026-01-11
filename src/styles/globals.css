@@ -3,26 +3,46 @@
 
 @theme {
   --background: hsl(226, 54%, 9%);
+  --secondary-background: hsl(226, 32%, 18%);
+
+  --background-button: hsla(0, 0%, 100%, 0.05);
+  --background-button-active: hsl(210, 79%, 46%);
 
   --muted-color: hsl(195, 2%, 46%);
   --radius: 0.5rem;
 
   --primary-text-color: hsl(0, 0%, 89%);
-  --secondary-text-color: hsl(0, 0%, 79%); 
+  --secondary-text-color: hsl(0, 0%, 79%);
   --ternary-text-color: hsl(220, 50%, 98%);
-  --quaternary-text-color: hsl(210, 79%, 46%); 
+  --quaternary-text-color: hsl(210, 79%, 46%);
 
   --primary-button-text-color: hsl(217, 36%, 83%);
 
-  --error-required: hsl(6, 100%, 84%); 
+  --error-required: hsl(6, 100%, 84%);
 
-  --font-inter: 'Inter', sans-serif;
-  --font-space-grotesk: 'Space Grotesk', sans-serif;
-  --font-montserrat: 'Montserrat', sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-space-grotesk: "Space Grotesk", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
 }
 
 @utility bg-background {
   @apply bg-[var(--background)];
+}
+
+@utility bg-secondary-background {
+  @apply bg-[var(--secondary-background)];
+}
+
+@utility margin-left-layout {
+  @apply ml-[100px] xl:ml-[120px] 2xl:ml-[150px];
+}
+
+@utility bg-button {
+  @apply bg-[var(--background-button)];
+}
+
+@utility bg-button-active {
+  @apply bg-[var(--background-button-active)] shadow-[0_0_10px_0_#1876D2];
 }
 
 @utility primary-border {
@@ -58,22 +78,19 @@
 }
 
 @utility font-size-4xl {
-  @apply
-    text-2xl
+  @apply text-2xl
     lg:text-3xl
     xl:text-4xl;
 }
 
 @utility font-size-xl {
-  @apply
-    text-base
+  @apply text-base
     lg:text-lg
     xl:text-xl;
 }
 
 @utility font-size-lg {
-  @apply
-    text-sm
+  @apply text-sm
     lg:text-base
     xl:text-lg;
 }
