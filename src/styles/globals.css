@@ -1,2 +1,99 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --background: hsl(226, 54%, 9%);
+
+  --muted-color: hsl(195, 2%, 46%);
+  --radius: 0.5rem;
+
+  --primary-text-color: hsl(0, 0%, 89%);
+  --secondary-text-color: hsl(0, 0%, 79%); 
+  --ternary-text-color: hsl(220, 50%, 98%);
+  --quaternary-text-color: hsl(210, 79%, 46%); 
+
+  --primary-button-text-color: hsl(217, 36%, 83%);
+
+  --error-required: hsl(6, 100%, 84%); 
+
+  --font-inter: 'Inter', sans-serif;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+}
+
+@utility bg-background {
+  @apply bg-[var(--background)];
+}
+
+@utility primary-border {
+  @apply border-[var(--muted-color)] border;
+}
+
+@utility text-error {
+  @apply text-[var(--error-required)];
+}
+
+@utility border-error {
+  @apply border-[var(--error-required)];
+}
+
+@utility text-primary-color {
+  @apply text-[var(--primary-text-color)];
+}
+
+@utility text-secondary-color {
+  @apply text-[var(--secondary-text-color)];
+}
+
+@utility text-ternary-color {
+  @apply text-[var(--ternary-text-color)];
+}
+
+@utility text-quaternary-color {
+  @apply text-[var(--quaternary-text-color)];
+}
+
+@utility text-muted-color {
+  @apply text-[var(--muted-color)];
+}
+
+@utility font-size-4xl {
+  @apply
+    text-2xl
+    lg:text-3xl
+    xl:text-4xl;
+}
+
+@utility font-size-xl {
+  @apply
+    text-base
+    lg:text-lg
+    xl:text-xl;
+}
+
+@utility font-size-lg {
+  @apply
+    text-sm
+    lg:text-base
+    xl:text-lg;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--primary-text-color));
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #ffffff;
+  box-shadow: 0 0 0 1000px #0e1626 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff;
+  box-shadow: 0 0 0 1000px #0e1626 inset;
+}
