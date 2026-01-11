@@ -5,6 +5,8 @@
   --background: hsl(226, 54%, 9%);
   --secondary-background: hsl(226, 32%, 18%);
 
+  --card-background: hsla(220, 50%, 98%, 0.05);
+
   --background-button: hsla(0, 0%, 100%, 0.05);
   --background-button-active: hsl(210, 79%, 46%);
 
@@ -34,7 +36,7 @@
 }
 
 @utility margin-left-layout {
-  @apply ml-[100px] xl:ml-[120px] 2xl:ml-[150px];
+  @apply ml-[80px] xl:ml-[100px] 2xl:ml-[150px];
 }
 
 @utility bg-button {
@@ -80,19 +82,23 @@
 @utility font-size-4xl {
   @apply text-2xl
     lg:text-3xl
-    xl:text-4xl;
+    2xl:text-4xl;
 }
 
 @utility font-size-xl {
   @apply text-base
     lg:text-lg
-    xl:text-xl;
+    2xl:text-xl;
 }
 
 @utility font-size-lg {
   @apply text-sm
     lg:text-base
-    xl:text-lg;
+    2xl:text-lg;
+}
+
+@utility card {
+  @apply bg-[var(--card-background)] rounded-xl border border-[var(--background-button)] p-6;
 }
 
 body {
