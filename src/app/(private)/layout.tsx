@@ -1,5 +1,5 @@
-import Header from "./_components/Header";
-import Sidebar from "./_components/Sidebar";
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 
 export default function Layout({
   children,
@@ -12,9 +12,11 @@ export default function Layout({
     >
       <Header />
       <Sidebar />
-      <main className="margin-left-layout">
-        {children}
-      </main>
+      <div className="margin-left-layout pt-24">
+        <div className="max-w-[900px] xl:max-w-[1000px] 2xl:max-w-[1370px] mx-auto xl:pt-4 2xl:pt-14">
+          {children}
+        </div>
+      </div>
     </div>
   );
 }

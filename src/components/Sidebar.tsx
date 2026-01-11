@@ -53,8 +53,8 @@ export default function Sidebar() {
       className={cn(
         "h-screen flex flex-col justify-between items-center",
         "pt-5 xl:pt-7 2xl:pt-9",
-        "pl-6 xl:pl-8 2xl:pl-10",
-        "pr-6 xl:pr-8 2xl:pr-[46px]",
+        "pl-3 xl:pl-5 2xl:pl-10",
+        "pr-3 xl:pr-5 2xl:pr-[46px]",
         "pb-12 xl:pb-16 2xl:pb-20",
         "bg-secondary-background shadow-[4px_0px_20px_0px_#00000033] rounded-e-4xl fixed z-20",
         "transform transition-transform duration-300 ease-in-out",
@@ -81,7 +81,7 @@ export default function Sidebar() {
                     <div
                       className={cn(
                         "flex justify-center align-center m-auto",
-                        "w-14 h-[52px] xl:w-16 xl:h-[60px] rounded-2xl",
+                        "w-12 h-[48px] 2xl:w-16 2xl:h-[60px] rounded-2xl",
                         "bg-button text-white",
                         "cursor-pointer transition-colors duration-300 ease-in-out",
                         isActive ? "bg-button-active" : "bg-button",
@@ -106,7 +106,7 @@ export default function Sidebar() {
           <button
             onClick={handleLogout}
             className={cn(
-              "w-14 h-14 xl:w-16 xl:h-16",
+              "w-12 h-12 2xl:w-16 2xl:h-16 ",
               "rounded-full bg-[var(--background-button-active)] cursor-pointer",
               "font-montserrat font-size-lg text-white"
             )}
