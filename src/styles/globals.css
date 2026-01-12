@@ -11,6 +11,7 @@
 
   --background-button: hsla(0, 0%, 100%, 0.05);
   --background-button-active: hsl(210, 79%, 46%);
+  --background-button-cyan: hsl(188, 63%, 48%)
 
   --muted-color: hsl(195, 2%, 46%);
   --radius: 0.5rem;
@@ -51,6 +52,10 @@
 
 @utility bg-button-active {
   @apply bg-[var(--background-button-active)] shadow-[0_0_10px_0_#1876D2];
+}
+
+@utility bg-cyan-button {
+  @apply bg-[#2DB3C8] shadow-[0_0_10px_0_#2DB3C8];
 }
 
 @utility primary-border {
