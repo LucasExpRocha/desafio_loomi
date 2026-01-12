@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 
 @theme {
+  --breakpoint-3xl: 1800px;
+
   --background: hsl(226, 54%, 9%);
   --secondary-background: hsl(226, 32%, 18%);
 
@@ -132,6 +134,14 @@
 
 @utility cell-table-pill {
   @apply font-montserrat font-medium text-xs py-1 px-2 text-[var(--bg-background)] rounded-full;
+}
+
+@utility label-new-ticket {
+  @apply font-space-grotesk text-primary-color font-medium text-base px-6 h-6;
+}
+
+@utility input-new-ticket {
+  @apply w-full px-6 py-3 rounded-3xl font-inter font-normal text-sm placeholder:text-white/[0.5] bg-white/[0.05] border border-white/[0.1];
 }
 
 body {
