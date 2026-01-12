@@ -109,6 +109,11 @@
     2xl:text-lg;
 }
 
+@utility font-size-base {
+  @apply text-sm
+    xl:text-base;
+}
+
 @utility font-size-sm {
   @apply text-xs
     2xl:text-sm;

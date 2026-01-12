@@ -7,10 +7,12 @@ export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputE
   label?: string;
   onCheckedChange?: (checked: boolean) => void;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  inputClassName?: React.HTMLAttributes<HTMLInputElement>['className'];
+  labelClassName?: React.HTMLAttributes<HTMLSpanElement>['className'];
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, label, onCheckedChange, onChange, ...props }, ref) => {
+  ({ className, label, onCheckedChange, onChange, inputClassName, labelClassName, ...props }, ref) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange?.(e);
       onCheckedChange?.(e.target.checked);
@@ -28,13 +30,17 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           className={cn(
             "appearance-none w-[22px] h-[22px] rounded-[5px] border border-slate-600 relative",
             "transition-colors checked:bg-[#c7dd65] checked:border-[#c7dd65] checked:after:content-['✓']",
-            "after:content-[''] after:absolute after:inset-0 after:flex after:items-center after:justify-center after:text-[#0e1626] after:text-[16px]"
+            "after:content-[''] after:absolute after:inset-0 after:flex after:items-center after:justify-center after:text-[#0e1626] after:text-[16px]",
+            inputClassName
           )}
           ref={ref}
           onChange={handleChange}
           {...props}
         />
-        <span className="text-primary-color font-size-lg font-space-grotesk">{label}</span>
+        <span className={cn(
+          "text-primary-color font-size-lg font-space-grotesk",
+          labelClassName
+        )}>{label}</span>
       </label>
     )
   }
