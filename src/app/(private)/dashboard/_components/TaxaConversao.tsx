@@ -1,40 +1,51 @@
 "use client";
+
+import { dashboardService } from "@/app/services/dashboard.service";
+import { useQuery } from "@tanstack/react-query";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export default function TaxaConversao() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["nortusVumDashboard"],
+    queryFn: dashboardService.getDashboard,
+    structuralSharing: true,
+    retry: 2,
+    retryDelay: 1000,
+    staleTime: 10 * 1000,
+    gcTime: 5 * 60 * 1000,
+  });
+
   return (
-    <div
-      className="card pb-0"
-    >
+    <div className="card pb-0">
       <div className="flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-6">
         <h3 className="font-montserrat font-bold font-size-xl text-white">
           {"Taxa de conversão"}
         </h3>
-
       </div>
-      <ChartComp />
+      <ChartComp
+        series={data?.kpisTrend?.conversionTrend}
+        labels={data?.kpisTrend?.labels}
+      />
     </div>
   );
 }
 
-const ChartComp = () => {
-   const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 1224px)'
-  })
+const ChartComp = ({
+  series,
+  labels,
+}: {
+  series?: { name: string; data: number[] };
+  labels?: string[];
+}) => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
 
-   const height = isDesktopOrLaptop ? 248 : 188;
-
-  const series = [
-    {
-      name: "Conversões",
-      data: [100, 70, 110, 40, 60, 80],
-    },
-  ];
-
+  const height = isDesktopOrLaptop ? 248 : 188;
   const options = {
     chart: {
       type: "bar",
@@ -61,7 +72,7 @@ const ChartComp = () => {
         type: "vertical",
         shadeIntensity: 0.2,
         opacityFrom: 1,
-        opacityTo: 0.4,
+        opacityTo: 0.6,
         stops: [0, 100],
       },
     },
@@ -76,7 +87,7 @@ const ChartComp = () => {
     },
 
     xaxis: {
-      categories: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
+      categories: labels || [],
       axisBorder: { show: false },
       axisTicks: { show: false },
       labels: {
@@ -90,7 +101,7 @@ const ChartComp = () => {
 
     yaxis: {
       min: 0,
-      max: 125,
+      max: series?.data?.length ? Math.max(...series.data) + 10 : 0,
       tickAmount: 5,
       labels: {
         offsetX: -8,
@@ -102,14 +113,22 @@ const ChartComp = () => {
     },
 
     tooltip: {
-      custom: function ({ series, seriesIndex, dataPointIndex }: { series: number[][]; seriesIndex: number; dataPointIndex: number }) {
+      custom: function ({
+        series,
+        seriesIndex,
+        dataPointIndex,
+      }: {
+        series: number[][];
+        seriesIndex: number;
+        dataPointIndex: number;
+      }) {
         const value = series[seriesIndex][dataPointIndex];
 
         return `
           <div 
-            class="bg-[rgba(0,0,0,1)] py-3 px-4 font-montserrat font-semibold text-sm w-[150px] h-[40px]"
+            class="bg-[#3c4252] py-3 px-4 w-[150px] h-[40px] border-none"
           >
-            ${value} novos clientes
+            <p class="font-montserrat font-semibold font-size-sm text-white">${value} novos clientes</p>
           </div>
         `;
       },
@@ -123,7 +142,7 @@ const ChartComp = () => {
   return (
     <Chart
       options={options as ApexOptions}
-      series={series}
+      series={series ? [series] : []}
       type="bar"
       height={height}
     />
