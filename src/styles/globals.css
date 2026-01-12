@@ -45,6 +45,10 @@
   @apply bg-[var(--background-button)];
 }
 
+@utility bg-blue-button {
+  @apply bg-[var(--background-button-active)];
+}
+
 @utility bg-button-active {
   @apply bg-[var(--background-button-active)] shadow-[0_0_10px_0_#1876D2];
 }
