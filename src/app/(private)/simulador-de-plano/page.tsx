@@ -58,8 +58,8 @@ export default function SimuladorDePlano() {
               Indicadores
             </h3>
             {indicators.map((e) => (
-              <div key={e.name} className="flex items-center justify-between card w-full p-3.5 xl:p-6">
-                <div className="space-y-2">
+              <div key={e.name} className="flex items-center justify-between card w-full p-4 xl:p-6">
+                <div className="space-y-1">
                   <h5 className="font-montserrat font-bold font-size-xl text-white h-8">
                     {e.name}
                   </h5>
