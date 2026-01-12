@@ -58,7 +58,7 @@ export default function EvolucaoKpi() {
                 className={cn(
                   "bg-white/10 p-3 rounded-full cursor-pointer",
                   "font-montserrat font-semibold text-xs text-white",
-                  isActive ? "bg-button-active" : "bg-white/10"
+                  isActive ? "bg-cyan-button" : "bg-white/10"
                 )}
                 onClick={() => setSelectedOption(item.kpiName)}
               >
