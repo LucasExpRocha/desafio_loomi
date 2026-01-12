@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,7 @@ import CardsHeader from "./_components/CardsHeader";
 import ListaTickets from "./_components/ListaTickets";
 import TicketFormModal from "./_components/TicketFormModal";
 
-export default function GestaoDeTickets() {
+function GestaoDeTicketsContent() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"create" | "view">("create");
 
@@ -55,5 +55,13 @@ export default function GestaoDeTickets() {
         />
       )}
     </div>
+  );
+}
+
+export default function GestaoDeTickets() {
+  return (
+    <Suspense fallback={<div className="card">Carregando...</div>}>
+      <GestaoDeTicketsContent />
+    </Suspense>
   );
 }

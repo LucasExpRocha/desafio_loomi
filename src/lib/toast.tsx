@@ -1,7 +1,6 @@
 import { toast } from "sonner";
 import { CheckCircle, AlertCircle, AlertTriangle, X } from "lucide-react";
 
-// Definição dos estilos para cada tipo
 const toastStyles = {
   success: {
     bg: "bg-[#1876D2]", 
@@ -9,17 +8,17 @@ const toastStyles = {
     icon: CheckCircle,
   },
   error: {
-    bg: "bg-red-600", // Vermelho sólido
+    bg: "bg-red-600",
     textMuted: "text-red-50",
     icon: AlertCircle,
   },
   warning: {
-    bg: "bg-amber-500", // Laranja/Amarelo escuro (para contraste branco)
+    bg: "bg-amber-500", 
     textMuted: "text-amber-50",
     icon: AlertTriangle,
   },
   info: {
-    bg: "bg-blue-600", // O azul da sua imagem original
+    bg: "bg-blue-600", 
     textMuted: "text-blue-50",
     icon: AlertCircle,
   },
@@ -36,7 +35,6 @@ export const AppToast = (type: ToastType, title: string, message?: string) => {
       <div
         className={`${style.bg} relative flex w-full items-start gap-3 rounded-lg p-4 text-white shadow-lg transition-all md:min-w-[356px]`}
       >
-        {/* Ícone Dinâmico */}
         <Icon className="mt-0.5 h-5 w-5 shrink-0" />
 
         <div className="flex-1 pr-6">
@@ -48,7 +46,6 @@ export const AppToast = (type: ToastType, title: string, message?: string) => {
           )}
         </div>
 
-        {/* Botão Fechar */}
         <button
           onClick={() => toast.dismiss(t)}
           className="absolute right-2 top-2 p-1 text-white/70 hover:text-white transition-colors"
