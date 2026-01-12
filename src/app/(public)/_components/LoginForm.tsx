@@ -9,13 +9,18 @@ import { cn } from "@/lib/utils";
 import { LoginFormData, loginSchema } from "@/validation/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
   const router = useRouter();
 
-  const [remember, setRemember] = useState(Boolean(localStorage.getItem("rememberUser")));
+  const isBrowser = typeof window !== "undefined";
+
+  const savedEmail =
+    isBrowser ? localStorage.getItem("rememberUser") || "" : "";
+
+  const [remember, setRemember] = useState(!!savedEmail)
 
   const {
     register,
@@ -25,7 +30,7 @@ export default function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     defaultValues: {
-      email: localStorage.getItem("rememberUser") || "",
+      email: savedEmail,
       password: "",
     },
     mode: "onChange",
@@ -50,16 +55,14 @@ export default function LoginForm() {
     setRemember(val);
     localStorage.setItem("rememberUserChecked", String(val));
     if (val) {
-      const u = getValues("email") ?? "";
-      localStorage.setItem("rememberUser", u);
+      const email = getValues("email") ?? "";
+      localStorage.setItem("rememberUser", email);
     } else {
       localStorage.removeItem("rememberUser");
     }
   }
 
-  useEffect(() => {
-    
-  }, [remember]);
+  useEffect(() => {}, [remember]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} aria-label="Formulário de login">
