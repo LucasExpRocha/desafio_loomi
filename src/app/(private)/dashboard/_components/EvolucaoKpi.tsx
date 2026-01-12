@@ -1,59 +1,95 @@
 "use client";
 
+import { dashboardService } from "@/app/services/dashboard.service";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
-import { useMediaQuery } from 'react-responsive'
+import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
+type KpiKey = keyof Omit<KpisTrend, "labels">;
+
 export default function EvolucaoKpi() {
-  const options = ["Retenção", "Conversão", "Churn", "ARPU"]
+  const [selectedOption, setSelectedOption] = useState<KpiKey>("arpuTrend");
+  const options: { name: string; kpiName: KpiKey }[] = [
+    {
+      name: "Retenção",
+      kpiName: "retentionTrend",
+    },
+    {
+      name: "Conversão",
+      kpiName: "conversionTrend",
+    },
+    {
+      name: "Churn",
+      kpiName: "churnTrend",
+    },
+    {
+      name: "ARPU",
+      kpiName: "arpuTrend",
+    },
+  ];
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["nortusVumDashboard"],
+    queryFn: dashboardService.getDashboard,
+    structuralSharing: true,
+    retry: 2,
+    retryDelay: 1000,
+    staleTime: 10 * 1000,
+    gcTime: 5 * 60 * 1000,
+  });
+
   return (
-    <div
-      className="card pb-0"
-    >
+    <div className="card pb-0">
       <div className="flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-16">
         <h3 className="font-montserrat font-bold font-size-xl text-white">
           {"Evolução dos KPI's"}
         </h3>
         <ul className="flex px-3 py-2 gap-2 rounded-full bg-white/5">
-          {
-            options.map((item) => {
-              const isActive = item === "ARPU";
-              return (
-                <li key={item} className={cn(
+          {options.map((item) => {
+            const isActive = item.kpiName === selectedOption;
+            return (
+              <li
+                key={item.kpiName}
+                className={cn(
                   "bg-white/10 p-3 rounded-full cursor-pointer",
                   "font-montserrat font-semibold text-xs text-white",
-                  isActive ? "bg-button-active" : "bg-white/10",
-                )}>
-                  {item}
-                </li>
-              )
-            })
-          }
+                  isActive ? "bg-button-active" : "bg-white/10"
+                )}
+                onClick={() => setSelectedOption(item.kpiName)}
+              >
+                {item.name}
+              </li>
+            );
+          })}
         </ul>
       </div>
-      <ChartComp />
+      <ChartComp
+        series={data?.kpisTrend?.[selectedOption]}
+        labels={data?.kpisTrend?.labels}
+      />
     </div>
   );
 }
 
-const ChartComp = () => {
-   const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 1224px)'
-  })
-  
-  const height = isDesktopOrLaptop ? 208 : 188;
-  
-  const series = [
-    {
-      name: "ARPU",
-      data: [95, 120, 160, 190, 150, 110, 95, 120, 170, 220, 240, 200],
-    },
-  ];
+const ChartComp = ({
+  series,
+  labels,
+}: {
+  series?: { name: string; data: number[] };
+  labels?: string[];
+}) => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
 
-  const options = {
+  const height = isDesktopOrLaptop ? 208 : 188;
+
+  const options: ApexOptions = {
     chart: {
       type: "area",
       toolbar: { show: false },
@@ -70,9 +106,8 @@ const ChartComp = () => {
     fill: {
       type: "gradient",
       gradient: {
-        shadeIntensity: 1,
         opacityFrom: 1,
-        opacityTo: 0.05,
+        opacityTo: 0.5,
         stops: [0, 100],
       },
     },
@@ -89,10 +124,7 @@ const ChartComp = () => {
     },
 
     xaxis: {
-      categories: [
-        "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-        "Jul", "Ago", "Set", "Out", "Nov", "Dez",
-      ],
+      categories: labels || [],
       labels: {
         style: {
           colors: "#FFFFFF",
@@ -105,7 +137,7 @@ const ChartComp = () => {
 
     yaxis: {
       min: 0,
-      max: 285,
+      max: series?.data?.length ? Math.max(...series.data) : 0,
       tickAmount: 4,
       labels: {
         offsetX: -16,
@@ -113,7 +145,7 @@ const ChartComp = () => {
           colors: "#FFFFFF",
           fontSize: "14px",
         },
-        formatter: (val: unknown) => `${val}`,
+        formatter: (val: number) => `${val}`,
       },
     },
 
@@ -124,24 +156,32 @@ const ChartComp = () => {
 
     tooltip: {
       enabled: true,
-      custom: function ({ series, seriesIndex, dataPointIndex, }: { series: number[][]; seriesIndex: number; dataPointIndex: number; }) {
+      custom: function ({
+        series,
+        seriesIndex,
+        dataPointIndex,
+      }: {
+        series: number[][];
+        seriesIndex: number;
+        dataPointIndex: number;
+      }) {
         const value = series[seriesIndex][dataPointIndex];
 
         return `
       <div 
-        class="bg-white/15 py-3 px-4 font-montserrat font-semibold text-sm w-[100px] h-[40px]"
+        class="bg-[#3c4252] py-3 px-4 w-[100px] h-[40px] border-[#3c4252]"
       >
-        R$ ${value.toFixed(1)}k
+        <span class="font-montserrat font-semibold font-size-sm text-white">R$ ${(value/1000).toFixed(1)}k</span>
       </div>
     `;
-      }
-    }
+      },
+    },
   };
 
   return (
     <Chart
-      options={options as ApexOptions}
-      series={series}
+      options={options}
+      series={series ? [series] : []}
       type="area"
       height={height}
     />

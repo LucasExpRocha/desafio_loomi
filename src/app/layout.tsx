@@ -3,6 +3,7 @@ import { Inter, Montserrat, Space_Grotesk } from 'next/font/google';
 
 import '../styles/globals.css';
 import { Toaster } from 'sonner';
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: 'Desafio Loomi',
@@ -38,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className={inter.variable + ' ' + spaceGrotesk.variable + ' ' + montserrat.variable} >
       <body className="font-inter">
-        {children}
+         <Providers>{children}</Providers>
         <Toaster position="bottom-center" />
       </body>
     </html>
