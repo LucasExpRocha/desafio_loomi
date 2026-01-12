@@ -1,51 +1,50 @@
-'use client';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
+import { logout } from "@/app/actions/auth-actions";
+import { cn } from "@/lib/utils";
 
 const listNavigation = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: '/svgs/dashboard.svg',
-    href: '/dashboard',
+    id: "dashboard",
+    label: "Dashboard",
+    icon: "/svgs/dashboard.svg",
+    href: "/dashboard",
   },
   {
-    id: 'ticket',
-    label: 'Ticket',
-    icon: '/svgs/ticket.svg',
-    href: '/gestao-de-tickets',
+    id: "ticket",
+    label: "Ticket",
+    icon: "/svgs/ticket.svg",
+    href: "/gestao-de-tickets",
   },
   {
-    id: 'chat',
-    label: 'Chat',
-    icon: '/svgs/chat.svg',
-    href: '/chat-assistente-virtual',
+    id: "chat",
+    label: "Chat",
+    icon: "/svgs/chat.svg",
+    href: "/chat-assistente-virtual",
   },
   {
-    id: 'users',
-    label: 'Users',
-    icon: '/svgs/profile.svg',
-    href: '#',
+    id: "users",
+    label: "Users",
+    icon: "/svgs/profile.svg",
+    href: "#",
     disabled: true,
   },
   {
-    id: 'plan',
-    label: 'Plan',
-    icon: '/svgs/plan.svg',
-    href: '/simulador-de-plano'
+    id: "plan",
+    label: "Plan",
+    icon: "/svgs/plan.svg",
+    href: "/simulador-de-plano",
   },
-]
+];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
 
   async function handleLogout() {
-    console.log('Logout');
-    router.push('/');
+    await logout();
   }
 
   return (
@@ -57,7 +56,7 @@ export default function Sidebar() {
         "pr-3 xl:pr-5 2xl:pr-[46px]",
         "pb-12 xl:pb-16 2xl:pb-20",
         "bg-secondary-background shadow-[4px_0px_20px_0px_#00000033] rounded-e-4xl fixed z-20",
-        "transform transition-transform duration-300 ease-in-out",
+        "transform transition-transform duration-300 ease-in-out"
       )}
     >
       <div className="flex flex-col items-center justify-between gap-6 h-full ">
@@ -85,7 +84,7 @@ export default function Sidebar() {
                         "bg-button text-white",
                         "cursor-pointer transition-colors duration-300 ease-in-out",
                         isActive ? "bg-button-active" : "bg-button",
-                        item.disabled ? "cursor-not-allowed" : "cursor-pointer",
+                        item.disabled ? "cursor-not-allowed" : "cursor-pointer"
                       )}
                     >
                       <Image
