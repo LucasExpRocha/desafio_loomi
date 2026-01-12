@@ -32,7 +32,7 @@ export default function SimuladorDePlano() {
       <div className="grid grid-cols-[62fr_35fr] gap-6 2xl:gap-8">
         <PlanosPersonalizados />
         <section className="flex flex-col gap-6 2xl:gap-8">
-          <div className="card py-10">
+          <div className="card p-4 xl:p-6 py-10">
             <h3 className="font-montserrat font-bold font-size-xl text-white mb-8">
               Benefícios Inclusos
             </h3>
@@ -53,13 +53,13 @@ export default function SimuladorDePlano() {
               ))}
             </div>
           </div>
-          <div className="card text-white flex flex-col gap-8 p-8">
+          <div className="card text-white flex flex-col gap-4 xl:gap-8 p-4 xl:p-8">
             <h3 className="font-montserrat font-bold font-size-xl text-white">
               Indicadores
             </h3>
             {indicators.map((e) => (
-              <div key={e.name} className="flex items-center justify-between card w-full">
-                <div className="space-y-2">
+              <div key={e.name} className="flex items-center justify-between card w-full p-4 xl:p-6">
+                <div className="space-y-1">
                   <h5 className="font-montserrat font-bold font-size-xl text-white h-8">
                     {e.name}
                   </h5>

@@ -69,7 +69,7 @@ export default function PlanosPersonalizados() {
                 selectedPlan === plan.name && "border-[#1876D2]"
               )}
             >
-              <div className="flex justify-between items-end">
+              <div className="flex justify-between items-end relative">
                 <h4 className="font-montserrat font-bold font-size-sm text-white">
                   {plan.name}
                 </h4>
@@ -77,7 +77,8 @@ export default function PlanosPersonalizados() {
                   <span
                     className={cn(
                       "font-montserrat text-[#0B1125] font-medium text-xs",
-                      "bg-[#43D2CB] px-2 py-1 rounded-full"
+                      "bg-[#43D2CB] px-2 py-1 rounded-full",
+                      "absolute top-[-32px] right-0 2xl:static"
                     )}
                   >
                     Recomendado
@@ -85,7 +86,7 @@ export default function PlanosPersonalizados() {
                 )}
               </div>
               <p className="font-montserrat font-bold font-size-2xl text-white">
-                R$ {formatCurrency(plan.price)}
+                {formatCurrency(plan.price)}
               </p>
               <p className="font-montserrat font-size-sm text-white/60">
                 Por mês
@@ -110,7 +111,7 @@ export default function PlanosPersonalizados() {
           aria-label="Valor do veículo"
           className="w-full h-2 rounded-full accent-[##1876D]"
         />
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between text-white">
           <span className="font-montserrat font-normal font-size-sm">
             R$ 10.000
           </span>
@@ -134,7 +135,7 @@ export default function PlanosPersonalizados() {
           aria-label="Idade do cliente"
           className="w-full h-2 rounded-full accent-[##1876D]"
         />
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between text-white">
           <span className="font-montserrat font-normal font-size-sm">
             18 anos
           </span>
