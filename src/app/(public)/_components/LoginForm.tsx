@@ -71,7 +71,7 @@ export default function LoginForm() {
         label="Usuário"
         error={errors.email?.message}
         {...register("email")}
-        value={getValues("email")}
+        defaultValue={getValues("email")}
         subText="Insira o seu e-mail, CPF ou passaporte."
         className="mb-8 text-secondary-color"
         autoFocus
