@@ -368,7 +368,12 @@ export default function ListaTickets({
 
         <div className="flex flex-wrap items-center gap-4 justify-between md:justify-end w-full px-6 h-[48px]">
           <button
-            className="w-[56px]"
+            className={cn(
+              "w-[56px]",
+              currentPage === 1
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer brightness-200"
+            )}
             disabled={currentPage === 1}
             onClick={goToFirstPage}
           >
@@ -380,7 +385,12 @@ export default function ListaTickets({
             />
           </button>
           <button
-            className="w-[56px]"
+            className={cn(
+              "w-[56px]",
+              currentPage > 1
+                ? "cursor-pointer brightness-200"
+                : "opacity-50 cursor-not-allowed"
+            )}
             disabled={currentPage <= 1}
             onClick={goToPreviousPage}
           >
@@ -397,7 +407,10 @@ export default function ListaTickets({
           </span>
 
           <button
-            className="w-[56px]"
+            className={cn(
+              "w-[56px] cursor-pointer",
+              currentPage < totalPages ? "" : "opacity-25 cursor-not-allowed"
+            )}
             disabled={currentPage >= totalPages}
             onClick={goToNextPage}
           >
@@ -409,7 +422,10 @@ export default function ListaTickets({
             />
           </button>
           <button
-            className="w-[56px]"
+            className={cn(
+              "w-[56px] cursor-pointer",
+              currentPage >= totalPages ? "opacity-25 cursor-not-allowed" : ""
+            )}
             disabled={currentPage === totalPages}
             onClick={goToLastPage}
           >

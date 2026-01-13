@@ -8,7 +8,9 @@ import CardsHeader from "./_components/CardsHeader";
 import ListaTickets from "./_components/ListaTickets";
 import TicketFormModal from "./_components/TicketFormModal";
 import { ticketsService } from "@/app/services/tickets.service";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AppToast } from "@/lib/toast";
+import { toast } from "sonner";
 
 function GestaoDeTicketsContent() {
   const [open, setOpen] = useState(false);
@@ -30,8 +32,49 @@ function GestaoDeTicketsContent() {
     gcTime: 5 * 60 * 1000,
   });
 
-  const handleSave = async () => {
-    console.log("Criando ticket... ");
+  const { data: editingTicket } = useQuery({
+    queryKey: ["ticket", itemId],
+    queryFn: () => ticketsService.getTicket(itemId!),
+    enabled: !!itemId,
+    retry: 1,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: (data: TicketFormData) => ticketsService.createTicket(data),
+    onSuccess: () => {
+      AppToast(
+        "success",
+        "Ticket criado com sucesso!",
+        "O ticket foi criado e já está na sua lista."
+      );
+      refetch();
+      setOpen(false);
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: (vars: { id: string; data: TicketFormData }) =>
+      ticketsService.updateTicket(vars.id, vars.data),
+    onSuccess: () => {
+      AppToast(
+        "success",
+        "Ticket editado com sucesso!",
+        "O ticket foi editado e já está na sua lista."
+      );
+      refetch();
+      setOpen(false);
+      router.replace(`${pathname}?edit=${itemId}`);
+    },
+  });
+
+  const handleSave = async (data: TicketFormData) => {
+    if (itemId) {
+      await updateMutation.mutateAsync({ id: itemId, data });
+    } else {
+      const toastId = toast.loading("Criando ticket... ");
+      await createMutation.mutateAsync(data);
+      toast.dismiss(toastId);
+    }
   };
 
   useEffect(() => {
@@ -54,6 +97,7 @@ function GestaoDeTicketsContent() {
         <TicketFormModal
           open={isOpen}
           mode={!!itemId ? "edit" : viewId ? "view" : "create"}
+          initial={!!itemId ? (editingTicket ?? null) : null}
           onClose={() => {
             const params = new URLSearchParams(
               Array.from(searchParams.entries())
