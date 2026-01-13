@@ -16,7 +16,7 @@ Interface moderna, buscando proporcionar uma experiência de operador fluida, mo
 - Linguagem: `TypeScript`
 - Estilos: `Tailwind CSS`
 - Estado assíncrono: `@tanstack/react-query`
-- Gráficos: `recharts`
+- Gráficos: `apexcharts `
 - Mapas: `ol` (OpenLayers)
 
 ## Requisitos
