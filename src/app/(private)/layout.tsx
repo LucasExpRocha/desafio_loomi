@@ -13,7 +13,7 @@ export default function Layout({
       <Header />
       <Sidebar />
       <div className="margin-left-layout pt-22">
-        <div className="max-w-[900px] xl:max-w-[1000px] 2xl:max-w-[1370px] mx-auto xl:pt-4 2xl:pt-14">
+        <div className="max-w-[900px] xl:max-w-[1000px] 2xl:max-w-[1200px] 3xl:max-w-[1370px] mx-auto  3xl:pt-14">
           {children}
         </div>
       </div>

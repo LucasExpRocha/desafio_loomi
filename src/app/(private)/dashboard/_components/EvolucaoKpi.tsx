@@ -49,7 +49,7 @@ export default function EvolucaoKpi() {
       <span className="block rounded-full absolute w-[200px] h-[200px] bg-gradient-to-br from-[#BDDAFF] to-[#D3ABF440] blur-[150px] top-[-200px] right-[-150px]" />
       <span className="block rounded-full absolute w-[200px] h-[200px] bg-gradient-to-br from-[#BDDAFF] to-[#D3ABF440] blur-[150px] bottom-[-200px] left-[-150px]" />
       <div className="card pb-0">
-        <div className="flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-16">
+        <div className="flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-6 3xl:mb-16">
           <h3 className="font-montserrat font-bold font-size-xl text-white">
             {"Evolução dos KPI's"}
           </h3>
@@ -60,7 +60,7 @@ export default function EvolucaoKpi() {
                 <li
                   key={item.kpiName}
                   className={cn(
-                    "bg-white/10 p-3 rounded-full cursor-pointer",
+                    "bg-white/10 p-2 3xl:p-3 rounded-full cursor-pointer",
                     "font-montserrat font-semibold text-xs text-white",
                     isActive ? "bg-cyan-button" : "bg-white/10"
                   )}

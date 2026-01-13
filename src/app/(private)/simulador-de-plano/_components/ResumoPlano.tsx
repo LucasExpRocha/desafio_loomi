@@ -17,7 +17,7 @@ export default function ResumoPlano({
 }: ResumoPlanoProps) {
   return (
     <section className="flex flex-col gap-6 2xl:gap-8">
-      <div className="card p-4 py-10">
+      <div className="card px-8 py-10">
         <h3 className="font-montserrat font-bold font-size-xl text-white mb-8">
           Benefícios Inclusos
         </h3>

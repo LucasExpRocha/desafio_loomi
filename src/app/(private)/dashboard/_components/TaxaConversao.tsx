@@ -25,7 +25,7 @@ export default function TaxaConversao() {
     <div className="card pb-0">
       <div
         className={cn(
-          "flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-6",
+          "flex items-center justify-between gap-6 h-14 mb-2 3xl:mb-6",
           {
             "2xl:mb-16": isLoading,
           }
@@ -52,7 +52,11 @@ const ChartSkeleton = () => {
     query: "(min-width: 1224px)",
   });
 
-  const height = isDesktopOrLaptop ? 248 : 188;
+  const isFullHd = useMediaQuery({
+    query: "(min-width: 1920px)",
+  });
+
+  const height = isFullHd ? 248 : isDesktopOrLaptop ? 228 : 188;
 
   return (
     <div className="relative rounded-xl overflow-hidden" style={{ height: `${height}px` }}>
@@ -71,12 +75,15 @@ const ChartComp = ({
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1224px)",
   });
+  const isFullHd = useMediaQuery({
+    query: "(min-width: 1920px)",
+  });
 
-  const height = isDesktopOrLaptop ? 248 : 188;
+  const height = isFullHd ? 248 : isDesktopOrLaptop ? 218 : 188;
   const options = {
     chart: {
       type: "bar",
-      height: 320,
+      height: height,
       toolbar: { show: false },
       fontFamily: "Montserrat, sans-serif",
       background: "transparent",

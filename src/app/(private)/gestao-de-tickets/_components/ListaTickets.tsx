@@ -150,7 +150,7 @@ export default function ListaTickets({
   }, [search, status, priority, responsible, pathname, router]);
 
   return (
-    <div className="card gap-4">
+    <div className="card gap-4 pb-2">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-montserrat font-bold font-size-xl text-white">
           Lista de Tickets
