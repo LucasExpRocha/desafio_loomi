@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SimuladorDePlano() {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["planSimulator"],
     queryFn: planSimulatorService.getPlans,
     structuralSharing: true,
@@ -19,17 +19,19 @@ export default function SimuladorDePlano() {
     gcTime: 5 * 60 * 1000,
   });
 
+  const showSkeleton = isLoading || (!data && !isError);
+
   return (
     <div className="flex flex-col gap-6 pr">
       <div className="grid grid-cols-[62fr_35fr] gap-6 2xl:gap-8">
         <PlanosPersonalizados
           plansIndicators={data?.plansIndicators || []}
-          isLoading={isLoading}
+          isLoading={showSkeleton}
         />
         <ResumoPlano
           includedBenefits={data?.includedBenefits}
           plansIndicators={data?.plansIndicators}
-          isLoading={isLoading}
+          isLoading={showSkeleton}
         />
       </div>
     </div>

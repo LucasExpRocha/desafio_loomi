@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AppToast } from "@/lib/toast";
 import { toast } from "sonner";
 
-export default function GestaoDeTickets() {
+function GestaoDeTicketsContent() {
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function GestaoDeTickets() {
   const itemId = searchParams.get("edit") || null;
   const viewId = searchParams.get("view") || null;
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isError } = useQuery({
     queryKey: ["ticketsList"],
     queryFn: ticketsService.getAllTickets,
     refetchInterval: 20 * 1000,
@@ -88,11 +88,12 @@ export default function GestaoDeTickets() {
   }, []);
 
   const isOpen = open || !!itemId || viewId !== null;
+  const showSkeleton = isLoading || (!data && !isError);
 
   return (
     <div className="flex flex-col gap-4 2xl:gap-6">
       <CardsHeader ticketsList={data?.data || []} />
-      <ListaTickets ticketsList={data?.data || []} isLoading={isLoading} />
+      <ListaTickets ticketsList={data?.data || []} isLoading={showSkeleton} />
       {isOpen && (
         <TicketFormModal
           open={isOpen}
@@ -113,5 +114,13 @@ export default function GestaoDeTickets() {
         />
       )}
     </div>
+  );
+}
+
+export default function GestaoDeTickets() {
+  return (
+    <Suspense fallback={null}>
+      <GestaoDeTicketsContent />
+    </Suspense>
   );
 }
