@@ -1,5 +1,6 @@
 "use client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDateTime } from "@/lib/formatDateTime";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
@@ -13,10 +14,10 @@ const ITEMS_PER_PAGE = 5;
 
 export default function ListaTickets({
   ticketsList,
-  isLoading
+  isLoading,
 }: {
   ticketsList?: TicketItem[] | null[];
-  isLoading: boolean
+  isLoading: boolean;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -150,7 +151,7 @@ export default function ListaTickets({
   }, [search, status, priority, responsible, pathname, router]);
 
   return (
-    <div className="card gap-4 pb-2">
+    <div className="card gap-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-montserrat font-bold font-size-xl text-white">
           Lista de Tickets
@@ -160,11 +161,11 @@ export default function ListaTickets({
       <div className="items-center gap-2">
         <div className="flex items-center gap-2 2xl:flex-nowrap mb-4">
           <div className="relative flex items-center w-full ">
-            <Search className="absolute left-5 w-4 h-4 text-primary-color pointer-events-none" />
+            <Search className="absolute left-5 w-3 h-3 3xl:w-4 3xl:h-4 text-primary-color pointer-events-none" />
             <input
               type={"text"}
               className={cn(
-                "w-full pl-[44px] py-2 bg-background rounded-full",
+                "w-full pl-[44px] py-1 bg-background rounded-full",
                 "font-inter font-size-sm text-primary-color placeholder:text-primary-color",
                 "outline-none focus:outline-none focus:ring-0 border-none"
               )}
@@ -219,189 +220,198 @@ export default function ListaTickets({
             ))}
           </select>
         </div>
-        <div className="overflow-x-auto bg-[rgba(255,255,255,.05)] p-6 rounded-2xl mb-4">
-          <table className="table-auto min-w-full ">
-            <thead>
-              <tr className="text-left ">
-                <th className="table-header w-[100px]">ID</th>
-                <th className="table-header w-12 2xl:w-[100px]">Prioridade</th>
-                <th className="table-header w-[200px]">Cliente</th>
-                <th className="table-header w-[200px]">Assunto</th>
-                <th className="table-header w-12 xl:w-[140px]">Status</th>
-                <th className="table-header w-[90px]">Criado em</th>
-                <th className="table-header w-[140px]">Responsável</th>
-                <th className="table-header w-[140px]">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {isLoading ? (
-                Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
-                  <tr key={index} className="border-t border-white/10">
-                    <td className="py-3 px-4">
-                      <Skeleton className="h-5 w-8 bg-white/10" />
-                    </td>
-                    <td className="py-3 px-4">
-                      <Skeleton className="h-5 w-20 bg-white/10 rounded-full" />
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-32 bg-white/10" />
-                        <Skeleton className="h-3 w-24 bg-white/10" />
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <Skeleton className="h-5 w-40 bg-white/10" />
-                    </td>
-                    <td className="py-3 px-4">
-                      <Skeleton className="h-5 w-24 bg-white/10 rounded-full" />
-                    </td>
-                    <td className="py-3 px-4">
-                      <Skeleton className="h-5 w-24 bg-white/10" />
-                    </td>
-                    <td className="py-3 px-4">
-                      <Skeleton className="h-5 w-28 bg-white/10" />
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex gap-4">
-                        <Skeleton className="h-5 w-12 bg-white/10" />
-                        <Skeleton className="h-5 w-12 bg-white/10" />
-                      </div>
+        <div className="bg-[rgba(255,255,255,.05)] px-6 rounded-2xl mb-4">
+          <ScrollArea className="w-full h-[300px]  min-[1920px]:h-auto">
+            <table className="table-auto min-w-full ">
+              <thead>
+                <tr className="text-left ">
+                  <th className="table-header w-[100px]">ID</th>
+                  <th className="table-header w-12 2xl:w-[100px]">
+                    Prioridade
+                  </th>
+                  <th className="table-header w-[200px]">Cliente</th>
+                  <th className="table-header w-[200px]">Assunto</th>
+                  <th className="table-header w-12 xl:w-[140px]">Status</th>
+                  <th className="table-header w-[90px]">Criado em</th>
+                  <th className="table-header w-[140px]">Responsável</th>
+                  <th className="table-header w-[140px]">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {isLoading ? (
+                  Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
+                    <tr key={index} className="border-t border-white/10">
+                      <td className="py-3 px-4">
+                        <Skeleton className="h-5 w-8 bg-white/10" />
+                      </td>
+                      <td className="py-3 px-4">
+                        <Skeleton className="h-5 w-20 bg-white/10 rounded-full" />
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-32 bg-white/10" />
+                          <Skeleton className="h-3 w-24 bg-white/10" />
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">
+                        <Skeleton className="h-5 w-40 bg-white/10" />
+                      </td>
+                      <td className="py-3 px-4">
+                        <Skeleton className="h-5 w-24 bg-white/10 rounded-full" />
+                      </td>
+                      <td className="py-3 px-4">
+                        <Skeleton className="h-5 w-24 bg-white/10" />
+                      </td>
+                      <td className="py-3 px-4">
+                        <Skeleton className="h-5 w-28 bg-white/10" />
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex gap-4">
+                          <Skeleton className="h-5 w-12 bg-white/10" />
+                          <Skeleton className="h-5 w-12 bg-white/10" />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : showTickets.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={8}
+                      className="py-6 px-4 text-center text-white font-montserrat font-semibold"
+                    >
+                      Nenhum resultado encontrado
                     </td>
                   </tr>
-                ))
-              ) : showTickets.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="py-6 px-4 text-center">
-                    Nenhum resultado encontrado
-                  </td>
-                </tr>
-              ) : (
-                showTickets.map((ticket) => (
-                  <tr key={ticket.id} className="border-t border-white/10">
-                    <td className="py-3 px-4 ">
-                      <span className="cell-table-semibold">
-                        {ticket.ticketId}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4  cell-table-semibold">
-                      <span
-                        title={ticket.priority}
-                        className={cn(
-                          "w-3 h-3 rounded-full p-0 mx-auto block",
-                          "2xl:cell-table-pill 2xl:w-auto 2xl:h-auto 2xl:mx-0 2xl:inline-block",
-                          priorityColors[
-                            ticket.priority as keyof typeof priorityColors
-                          ]
-                        )}
-                      >
+                ) : (
+                  showTickets.map((ticket) => (
+                    <tr key={ticket.id} className="border-t border-white/10">
+                      <td className="py-3 px-4 ">
+                        <span className="cell-table-semibold">
+                          {ticket.ticketId}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4  cell-table-semibold">
                         <span
+                          title={ticket.priority}
                           className={cn(
-                            "hidden 2xl:inline",
-                            ticket.priority === "Urgente"
-                              ? ""
-                              : "text-[#0B1125]"
+                            "w-3 h-3 rounded-full p-0 mx-auto block",
+                            "2xl:cell-table-pill 2xl:w-auto 2xl:h-auto 2xl:mx-0 2xl:inline-block",
+                            priorityColors[
+                              ticket.priority as keyof typeof priorityColors
+                            ]
                           )}
                         >
-                          {ticket.priority}
+                          <span
+                            className={cn(
+                              "hidden 2xl:inline",
+                              ticket.priority === "Urgente"
+                                ? ""
+                                : "text-[#0B1125]"
+                            )}
+                          >
+                            {ticket.priority}
+                          </span>
                         </span>
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="relative group">
-                        <p className="cell-table-semibold p-0">
-                          {ticket.client}
-                        </p>
-                        <p className="cell-table-normal p-0">{ticket.email}</p>
-                        <div className="absolute left-0 top-full mt-1 hidden group-hover:block lg:hidden px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
-                          {ticket.client} – {ticket.email}
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="relative group">
+                          <p className="cell-table-semibold p-0">
+                            {ticket.client}
+                          </p>
+                          <p className="cell-table-normal p-0">
+                            {ticket.email}
+                          </p>
+                          <div className="absolute left-0 top-full mt-1 hidden group-hover:block lg:hidden px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
+                            {ticket.client} – {ticket.email}
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="relative group">
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="relative group">
+                          <span
+                            className="cell-table-semibold truncate block"
+                            title={ticket.subject}
+                          >
+                            {ticket.subject}
+                          </span>
+                          <div className="absolute left-0 top-full mt-1 hidden group-hover:block px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
+                            {ticket.subject}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4">
                         <span
-                          className="cell-table-semibold truncate block"
-                          title={ticket.subject}
+                          title={ticket.status}
+                          className={cn(
+                            "w-3 h-3 rounded-full p-0 mx-auto block",
+                            "xl:cell-table-pill xl:w-auto xl:h-auto xl:mx-0 xl:inline-block",
+                            statusColors[
+                              ticket.status as keyof typeof statusColors
+                            ]
+                          )}
                         >
-                          {ticket.subject}
+                          <span className="hidden xl:inline">
+                            {ticket.status}
+                          </span>
                         </span>
-                        <div className="absolute left-0 top-full mt-1 hidden group-hover:block px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
-                          {ticket.subject}
+                      </td>
+                      <td className="py-3 px-4 max-w-[100px]">
+                        <div className="relative group">
+                          <span
+                            className="cell-table-semibold block"
+                            title={formatDateTime(ticket.createdAt)}
+                          >
+                            {formatDateTime(ticket.createdAt)}
+                          </span>
+                          <div className="absolute left-0 top-full mt-1 hidden group-hover:block px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
+                            {formatDateTime(ticket.createdAt)}
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        title={ticket.status}
-                        className={cn(
-                          "w-3 h-3 rounded-full p-0 mx-auto block",
-                          "xl:cell-table-pill xl:w-auto xl:h-auto xl:mx-0 xl:inline-block",
-                          statusColors[
-                            ticket.status as keyof typeof statusColors
-                          ]
-                        )}
-                      >
-                        <span className="hidden xl:inline">
-                          {ticket.status}
-                        </span>
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 max-w-[100px]">
-                      <div className="relative group">
-                        <span
-                          className="cell-table-semibold block"
-                          title={formatDateTime(ticket.createdAt)}
-                        >
-                          {formatDateTime(ticket.createdAt)}
-                        </span>
-                        <div className="absolute left-0 top-full mt-1 hidden group-hover:block px-2 py-1 text-xs bg-slate-800 text-white rounded shadow-lg z-10 whitespace-nowrap">
-                          {formatDateTime(ticket.createdAt)}
+                      </td>
+                      <td className="py-3 px-4 cell-table-semibold">
+                        {ticket.responsible}
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-2 gap-6">
+                          <button
+                            className="font-montserrat text-xs font-normal text-white flex items-end gap-2 cursor-pointer hover:underline-offset-1"
+                            onClick={() => {
+                              const params = new URLSearchParams(
+                                Array.from(searchParams.entries())
+                              );
+                              params.set("edit", ticket.id);
+                              const url = `${pathname}?${params.toString()}`;
+                              router.push(url);
+                            }}
+                          >
+                            Editar{" "}
+                            <PiPencilSimpleLine color="#1876D2" size={16} />
+                          </button>
+                          <button
+                            className="font-montserrat text-xs font-normal text-white flex gap-2 cursor-pointer hover:underline-offset-1"
+                            onClick={() => {
+                              const params = new URLSearchParams(
+                                Array.from(searchParams.entries())
+                              );
+                              params.set("view", ticket.id);
+                              const url = `${pathname}?${params.toString()}`;
+                              router.push(url);
+                            }}
+                          >
+                            Ver{" "}
+                            <MdOutlineKeyboardArrowRight
+                              color="#1876D2"
+                              size={16}
+                            />
+                          </button>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 cell-table-semibold">
-                      {ticket.responsible}
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2 gap-6">
-                        <button
-                          className="font-montserrat text-xs font-normal text-white flex items-end gap-2 cursor-pointer hover:underline-offset-1"
-                          onClick={() => {
-                            const params = new URLSearchParams(
-                              Array.from(searchParams.entries())
-                            );
-                            params.set("edit", ticket.id);
-                            const url = `${pathname}?${params.toString()}`;
-                            router.push(url);
-                          }}
-                        >
-                          Editar{" "}
-                          <PiPencilSimpleLine color="#1876D2" size={16} />
-                        </button>
-                        <button
-                          className="font-montserrat text-xs font-normal text-white flex gap-2 cursor-pointer hover:underline-offset-1"
-                          onClick={() => {
-                            const params = new URLSearchParams(
-                              Array.from(searchParams.entries())
-                            );
-                            params.set("view", ticket.id);
-                            const url = `${pathname}?${params.toString()}`;
-                            router.push(url);
-                          }}
-                        >
-                          Ver{" "}
-                          <MdOutlineKeyboardArrowRight
-                            color="#1876D2"
-                            size={16}
-                          />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </ScrollArea>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 justify-between md:justify-end w-full px-6 h-[48px]">

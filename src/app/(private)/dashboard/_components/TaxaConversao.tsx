@@ -26,9 +26,6 @@ export default function TaxaConversao() {
       <div
         className={cn(
           "flex items-center justify-between gap-6 h-14 mb-2 3xl:mb-6",
-          {
-            "2xl:mb-16": isLoading,
-          }
         )}
       >
         <h3 className="font-montserrat font-bold font-size-xl text-white">

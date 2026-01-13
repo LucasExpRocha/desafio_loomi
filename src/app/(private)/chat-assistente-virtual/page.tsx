@@ -68,7 +68,7 @@ export default function ChatAssistenteVirtual() {
 
   return (
     <div className="flex flex-col">
-      <div className="h-[calc(100vh-328px)] bg-white/5 rounded-2xl border border-white/10 overflow-hidden flex flex-col text-white mb-10">
+      <div className="h-[calc(100vh-228px)] bg-white/5 rounded-2xl border border-white/10 overflow-hidden flex flex-col text-white mb-10">
         <ScrollArea className="h-full px-6 py-8">
           <div className="space-y-4">
             <div className="flex justify-center mb-6">
