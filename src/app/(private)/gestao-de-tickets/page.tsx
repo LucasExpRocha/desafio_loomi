@@ -48,7 +48,7 @@ function GestaoDeTicketsContent() {
 
   return (
     <div className="flex flex-col gap-4 2xl:gap-6">
-      <CardsHeader />
+      <CardsHeader ticketsList={data?.data} />
       <ListaTickets ticketsList={data?.data} />
       {isOpen && (
         <TicketFormModal
