@@ -1,8 +1,8 @@
 import Checkbox from "@/components/Checkbox";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSimulatorStore } from "@/store/plan-simulator-zust";
 
 export default function PlanosPersonalizados({
   plansIndicators,
@@ -11,21 +11,19 @@ export default function PlanosPersonalizados({
   plansIndicators: SimulatorPlanIndicator[];
   isLoading?: boolean;
 }) {
-  const [selectedPlan, setSelectedPlan] = useState<string>("Intermediário");
-  const [vehicleValue, setVehicleValue] = useState<number>(50000);
-  const [clientAge, setClientAge] = useState<number>(28);
-  const [benefits, setBenefits] = useState<Record<string, boolean>>({
-    rouboFurto: true,
-    colisao: true,
-    incendio: true,
-    fenomenos: false,
-  });
+  const {
+    selectedPlan,
+    vehicleValue,
+    clientAge,
+    benefits,
+    setSelectedPlan,
+    setVehicleValue,
+    setClientAge,
+    toggleBenefit,
+    calculateAdditionalCost,
+  } = useSimulatorStore();
 
-  const addTotal =
-    (benefits.rouboFurto ? 25 : 0) +
-    (benefits.colisao ? 35 : 0) +
-    (benefits.incendio ? 20 : 0) +
-    (benefits.fenomenos ? 30 : 0);
+  const addTotal = calculateAdditionalCost();
 
   const aditional = [
     {
@@ -176,10 +174,7 @@ export default function PlanosPersonalizados({
               label={item.label}
               checked={benefits[item.key]}
               onCheckedChange={(checked) =>
-                setBenefits((prev: Record<string, boolean>) => ({
-                  ...prev,
-                  [item.key]: checked,
-                }))
+                toggleBenefit(item.key, checked as boolean)
               }
               inputClassName="w-4 h-4 checked:bg-[#1876D2] checked:border-[#1876D2] checked:after:content-['✓'] after:text-[#F7F7F7] after:text-xs"
               labelClassName="font-inter font-size-sm font-normal"
