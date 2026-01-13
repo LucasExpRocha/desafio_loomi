@@ -53,7 +53,7 @@ export default function LoginForm() {
 
   function handleRememberChange(val: boolean) {
     setRemember(val);
-    localStorage.setItem("rememberUserChecked", String(val));
+    localStorage.setItem("rememberUser", String(val));
     if (val) {
       const email = getValues("email") ?? "";
       localStorage.setItem("rememberUser", email);
@@ -74,7 +74,6 @@ export default function LoginForm() {
         defaultValue={getValues("email")}
         subText="Insira o seu e-mail, CPF ou passaporte."
         className="mb-8 text-secondary-color"
-        autoFocus
       />
 
       <TextField
