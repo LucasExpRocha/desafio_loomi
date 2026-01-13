@@ -1,44 +1,47 @@
 "use client";
 
-import { AppToast } from "@/lib/toast";
 import { cn } from "@/lib/utils";
 import { ticketSchema, TicketSchema } from "@/validation/ticket";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, XCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-type Mode = "create" | "view";
+type Mode = "create" | "view" | "edit";
 
 type Props = {
   open: boolean;
   mode: Mode;
+  initial: Partial<TicketItem> | null;
   onClose: () => void;
-  onSave: () => Promise<void>;
+  onSave: (data: TicketFormData) => Promise<void>;
 };
 
 export default function TicketFormModal({
   open,
   mode,
+  initial,
   onClose,
   onSave,
 }: Props) {
   const [isPrioridadeOpen, setIsPrioridadeOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors, isValid },
   } = useForm<TicketSchema>({
     defaultValues: {
-      priority: "Urgente",
-      client: "",
-      email: "",
-      subject: "",
-      status: "Aberto",
-      responsible: "",
+      priority: (initial?.priority as TicketPriority) ?? "Urgente",
+      client: initial?.client ?? "",
+      email: initial?.email ?? "",
+      subject: initial?.subject ?? "",
+      status: initial?.status ?? "Aberto",
+      responsible: initial?.responsible ?? "",
     },
     mode: "onChange",
     resolver: zodResolver(ticketSchema),
@@ -53,14 +56,46 @@ export default function TicketFormModal({
 
   const priority = watch("priority");
 
-  const onSubmit = handleSubmit(async () => {
-    await onSave();
-    AppToast("success", "Ticket salvo!", "O ticket foi salvo com sucesso.");
+  const onSubmit = handleSubmit(async (data) => {
+    setIsSubmitting(true);
+    if (mode === "edit" && initial?.id) {
+      await onSave({ ...data, ticketId: initial.ticketId || "" });
+    } else {
+      await onSave({
+        ...data,
+        ticketId: "TK" + (Date.now() % 10000).toString().padStart(4, "0"),
+      });
+    }
+    setIsSubmitting(false);
   });
 
-  if (!open) return null;
-
   const isView = mode === "view";
+  const isEdit = mode === "edit";
+
+  useEffect(() => {
+    if (mode === "edit" && initial) {
+      reset({
+        priority: (initial.priority as TicketPriority) ?? "Urgente",
+        client: initial.client ?? "",
+        email: initial.email ?? "",
+        subject: initial.subject ?? "",
+        status: initial.status ?? "Aberto",
+        responsible: initial.responsible ?? "",
+      });
+    }
+    if (mode === "create" && open) {
+      reset({
+        priority: "Urgente",
+        client: "",
+        email: "",
+        subject: "",
+        status: "Aberto",
+        responsible: "",
+      });
+    }
+  }, [mode, initial, reset, open]);
+
+  if (!open) return null;
 
   return (
     <div
@@ -77,7 +112,11 @@ export default function TicketFormModal({
             id="ticket-modal-title"
             className="font-space-grotesk font-normal font-size-4xl"
           >
-            {isView ? "Visualizar Ticket" : "Novo Ticket"}
+            {isView
+              ? "Visualizar Ticket"
+              : isEdit
+                ? "Editar Ticket"
+                : "Novo Ticket"}
           </h3>
 
           <button
@@ -98,8 +137,11 @@ export default function TicketFormModal({
           <div className="px-8 pt-6 pb-2 space-y-4">
             <div className="space-y-2">
               <p className="font-inter font-size-sm font-normal text-primary-color ">
-                Preencha os dados abaixo para registrar um novo ticket na
-                plataforma.
+                {isView
+                  ? "Visualizando ticket"
+                  : isEdit
+                    ? "Edite os dados abaixo"
+                    : "Preencha os dados abaixo para registrar um novo ticket na plataforma."}
               </p>
               <label className="label-new-ticket">Nome do cliente</label>
               <input
@@ -141,7 +183,7 @@ export default function TicketFormModal({
                 </button>
 
                 {isPrioridadeOpen && !isView && (
-                  <div className="absolute z-10 mt-1 w-full rounded-xl bg-[#171d30] border border-white/[0.1] overflow-hidden">
+                  <div className="absolute z-10 mt-1 w-full rounded-xl bg-[#171d30] border border-white/10 overflow-hidden">
                     {priorities.map((p) => (
                       <button
                         key={p}
@@ -186,7 +228,7 @@ export default function TicketFormModal({
             <button
               type="button"
               onClick={onClose}
-              className="w-32 h-14 border border-[#D9D9D9] rounded-[1.25rem]"
+              className="w-32 h-14 border border-[#D9D9D9] rounded-[1.25rem] cursor-pointer"
             >
               <span className="font-space-grotesk font-medium font-size-sm text-primary-color">
                 {isView ? "Fechar" : "Cancelar"}
@@ -195,6 +237,7 @@ export default function TicketFormModal({
 
             {!isView && (
               <button
+                disabled={isView || isSubmitting}
                 type="submit"
                 className={cn(
                   "inline-flex items-center justify-center rounded-[1.25rem] p-3 w-32 h-14",
