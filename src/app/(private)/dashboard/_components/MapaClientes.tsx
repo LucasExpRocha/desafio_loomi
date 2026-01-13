@@ -244,39 +244,43 @@ export default function MapaClientes() {
   }, [filtered]);
 
   return (
-    <div className="card">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="font-montserrat font-bold font-size-xl text-white">
-          Mapa de Clientes
-        </h3>
+    <div className="overflow-hidden relative">
+      <span className="block rounded-full absolute w-[200px] h-[200px] bg-gradient-to-br from-[#BDDAFF] to-[#D3ABF440] blur-[150px] top-[-250px] right-[400px]" />
+      <span className="block rounded-full absolute w-[200px] h-[200px] bg-gradient-to-br from-[#BDDAFF] to-[#D3ABF440] blur-[150px] bottom-[-200px] left-[-150px]" />
+      <div className="card">
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="font-montserrat font-bold font-size-xl text-white">
+            Mapa de Clientes
+          </h3>
 
-        <div className="flex gap-2">
-          <select
-            className="select-filter"
-            value={place}
-            onChange={(e) => setPlace(e.target.value)}
-          >
-            {placeOptions.map((type) => (
-              <option key={type}>{type}</option>
-            ))}
-          </select>
-          <select
-            className="select-filter"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {categories.map((cat) => (
-              <option key={cat}>{cat}</option>
-            ))}
-          </select>
+          <div className="flex gap-2">
+            <select
+              className="select-filter"
+              value={place}
+              onChange={(e) => setPlace(e.target.value)}
+            >
+              {placeOptions.map((type) => (
+                <option key={type}>{type}</option>
+              ))}
+            </select>
+            <select
+              className="select-filter"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              {categories.map((cat) => (
+                <option key={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
         </div>
-      </div>
 
-      <div
-        ref={containerRef}
-        className="h-[200px] 2xl:h-[260px] w-full rounded-xl overflow-hidden shadow-inner bg-[#0a0f1c] relative"
-      >
-        <div className="absolute inset-0 pointer-events-none bg-blue-900/10 mix-blend-overlay" />
+        <div
+          ref={containerRef}
+          className="h-[200px] 2xl:h-[260px] w-full rounded-xl overflow-hidden shadow-inner bg-[#0a0f1c] relative"
+        >
+          <div className="absolute inset-0 pointer-events-none bg-blue-900/10 mix-blend-overlay" />
+        </div>
       </div>
     </div>
   );
