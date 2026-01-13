@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AppToast } from "@/lib/toast";
 import { toast } from "sonner";
 
-function GestaoDeTicketsContent() {
+export default function GestaoDeTickets() {
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
@@ -91,8 +91,8 @@ function GestaoDeTicketsContent() {
 
   return (
     <div className="flex flex-col gap-4 2xl:gap-6">
-      <CardsHeader ticketsList={data?.data} />
-      <ListaTickets ticketsList={data?.data} />
+      <CardsHeader ticketsList={data?.data || []} />
+      <ListaTickets ticketsList={data?.data || []} isLoading={isLoading} />
       {isOpen && (
         <TicketFormModal
           open={isOpen}
@@ -113,13 +113,5 @@ function GestaoDeTicketsContent() {
         />
       )}
     </div>
-  );
-}
-
-export default function GestaoDeTickets() {
-  return (
-    <Suspense fallback={<div className="card">Carregando...</div>}>
-      <GestaoDeTicketsContent />
-    </Suspense>
   );
 }
