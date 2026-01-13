@@ -2,11 +2,14 @@ import Checkbox from "@/components/Checkbox";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PlanosPersonalizados({
   plansIndicators,
+  isLoading,
 }: {
   plansIndicators: SimulatorPlanIndicator[];
+  isLoading?: boolean;
 }) {
   const [selectedPlan, setSelectedPlan] = useState<string>("Intermediário");
   const [vehicleValue, setVehicleValue] = useState<number>(50000);
@@ -54,43 +57,59 @@ export default function PlanosPersonalizados({
           Planos Personalizados
         </h3>
         <div className="flex gap-6 w-full">
-          {plansIndicators?.map((plan) => (
-            <div
-              key={plan.name}
-              onClick={() => setSelectedPlan(plan.name)}
-              className={cn(
-                "card w-full space-x-2 xl:space-y-4 2xl:space-y-8 cursor-pointer",
-                selectedPlan === plan.name && "border-[#1876D2]"
-              )}
-            >
-              <div className="flex justify-between items-end relative">
-                <h4 className="font-montserrat font-bold font-size-sm text-white">
-                  {plan.name}
-                </h4>
-                {plan.name === "Premium" && (
-                  <span
-                    className={cn(
-                      "font-montserrat text-[#0B1125] font-medium text-xs",
-                      "bg-[#43D2CB] px-2 py-1 rounded-full",
-                      "absolute top-[-32px] right-0 2xl:static"
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="card w-full space-x-2 xl:space-y-4 2xl:space-y-8"
+                >
+                  <div className="flex justify-between items-end relative">
+                    <Skeleton className="h-5 w-24 bg-white/10" />
+                    {index === 2 && (
+                      <Skeleton className="h-6 w-28 rounded-full bg-white/10 absolute top-[-32px] right-0 2xl:static" />
                     )}
-                  >
-                    Recomendado
-                  </span>
-                )}
-              </div>
-              <p className="font-montserrat font-bold font-size-2xl text-white">
-                {formatCurrency(
-                  selectedPlan === plan.name
-                    ? plan.value + addTotal
-                    : plan.value
-                )}
-              </p>
-              <p className="font-montserrat font-size-sm text-white/60">
-                Por mês
-              </p>
-            </div>
-          ))}
+                  </div>
+                  <Skeleton className="h-10 w-32 bg-white/10" />
+                  <Skeleton className="h-4 w-16 bg-white/10" />
+                </div>
+              ))
+            : plansIndicators?.map((plan) => (
+                <div
+                  key={plan.name}
+                  onClick={() => setSelectedPlan(plan.name)}
+                  className={cn(
+                    "card w-full space-x-2 xl:space-y-4 2xl:space-y-8 cursor-pointer",
+                    selectedPlan === plan.name && "border-[#1876D2]"
+                  )}
+                >
+                  <div className="flex justify-between items-end relative">
+                    <h4 className="font-montserrat font-bold font-size-sm text-white">
+                      {plan.name}
+                    </h4>
+                    {plan.name === "Premium" && (
+                      <span
+                        className={cn(
+                          "font-montserrat text-[#0B1125] font-medium text-xs",
+                          "bg-[#43D2CB] px-2 py-1 rounded-full",
+                          "absolute top-[-32px] right-0 2xl:static"
+                        )}
+                      >
+                        Recomendado
+                      </span>
+                    )}
+                  </div>
+                  <p className="font-montserrat font-bold font-size-2xl text-white">
+                    {formatCurrency(
+                      selectedPlan === plan.name
+                        ? plan.value + addTotal
+                        : plan.value
+                    )}
+                  </p>
+                  <p className="font-montserrat font-size-sm text-white/60">
+                    Por mês
+                  </p>
+                </div>
+              ))}
         </div>
       </div>
 
