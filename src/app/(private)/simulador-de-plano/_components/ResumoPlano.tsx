@@ -3,6 +3,7 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/lib/formatCurrency";
 import { cn } from "@/lib/utils";
+import { useSimulatorStore } from "@/store/plan-simulator-zust";
 
 interface ResumoPlanoProps {
   includedBenefits?: string[];
@@ -15,8 +16,10 @@ export default function ResumoPlano({
   plansIndicators = [],
   isLoading = false,
 }: ResumoPlanoProps) {
+  const { selectedPlan } = useSimulatorStore();
+
   return (
-    <section className="flex flex-col gap-6 3xl:gap-8">
+    <section className="flex flex-col gap-6 2xl:gap-8">
       <div className="card px-8 3xl:py-10">
         <h3 className="font-montserrat font-bold font-size-xl text-white mb-8">
           Benefícios Inclusos
@@ -70,7 +73,12 @@ export default function ResumoPlano({
           : plansIndicators.map((e) => (
               <div
                 key={e.name}
-                className="flex items-center justify-between card w-full p-4 xl:p-6 2xl:p-8"
+                className={cn(
+                  "flex items-center justify-between card w-full p-4 xl:p-6 2xl:p-8 border transition-colors",
+                  selectedPlan === e.name
+                    ? "border-[#1876D2] bg-[#1876D2]/5"
+                    : "border-transparent"
+                )}
               >
                 <div className="space-y-2">
                   <h5 className="font-montserrat font-bold font-size-xl text-white h-8">
