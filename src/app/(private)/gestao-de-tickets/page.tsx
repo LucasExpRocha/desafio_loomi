@@ -21,7 +21,7 @@ function GestaoDeTicketsContent() {
   const itemId = searchParams.get("edit") || null;
   const viewId = searchParams.get("view") || null;
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, isError } = useQuery({
     queryKey: ["ticketsList"],
     queryFn: ticketsService.getAllTickets,
     refetchInterval: 20 * 1000,
@@ -88,11 +88,12 @@ function GestaoDeTicketsContent() {
   }, []);
 
   const isOpen = open || !!itemId || viewId !== null;
+  const showSkeleton = isLoading || (!data && !isError);
 
   return (
     <div className="flex flex-col gap-4 2xl:gap-6">
-      <CardsHeader ticketsList={data?.data} />
-      <ListaTickets ticketsList={data?.data} />
+      <CardsHeader ticketsList={data?.data || []} />
+      <ListaTickets ticketsList={data?.data || []} isLoading={showSkeleton} />
       {isOpen && (
         <TicketFormModal
           open={isOpen}
@@ -118,7 +119,7 @@ function GestaoDeTicketsContent() {
 
 export default function GestaoDeTickets() {
   return (
-    <Suspense fallback={<div className="card">Carregando...</div>}>
+    <Suspense fallback={null}>
       <GestaoDeTicketsContent />
     </Suspense>
   );

@@ -1,4 +1,5 @@
 "use client";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatDateTime } from "@/lib/formatDateTime";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
@@ -12,8 +13,10 @@ const ITEMS_PER_PAGE = 5;
 
 export default function ListaTickets({
   ticketsList,
+  isLoading
 }: {
   ticketsList?: TicketItem[] | null[];
+  isLoading: boolean
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -231,7 +234,42 @@ export default function ListaTickets({
               </tr>
             </thead>
             <tbody>
-              {showTickets.length === 0 ? (
+              {isLoading ? (
+                Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
+                  <tr key={index} className="border-t border-white/10">
+                    <td className="py-3 px-4">
+                      <Skeleton className="h-5 w-8 bg-white/10" />
+                    </td>
+                    <td className="py-3 px-4">
+                      <Skeleton className="h-5 w-20 bg-white/10 rounded-full" />
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-32 bg-white/10" />
+                        <Skeleton className="h-3 w-24 bg-white/10" />
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      <Skeleton className="h-5 w-40 bg-white/10" />
+                    </td>
+                    <td className="py-3 px-4">
+                      <Skeleton className="h-5 w-24 bg-white/10 rounded-full" />
+                    </td>
+                    <td className="py-3 px-4">
+                      <Skeleton className="h-5 w-24 bg-white/10" />
+                    </td>
+                    <td className="py-3 px-4">
+                      <Skeleton className="h-5 w-28 bg-white/10" />
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex gap-4">
+                        <Skeleton className="h-5 w-12 bg-white/10" />
+                        <Skeleton className="h-5 w-12 bg-white/10" />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : showTickets.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-6 px-4 text-center">
                     Nenhum resultado encontrado
