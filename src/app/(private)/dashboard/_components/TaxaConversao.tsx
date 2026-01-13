@@ -53,7 +53,7 @@ const ChartSkeleton = () => {
     query: "(min-width: 1920px)",
   });
 
-  const height = isFullHd ? 248 : isDesktopOrLaptop ? 228 : 188;
+  const height = isFullHd ? 248 : isDesktopOrLaptop ? 228 : 178;
 
   return (
     <div className="relative rounded-xl overflow-hidden" style={{ height: `${height}px` }}>
@@ -76,7 +76,7 @@ const ChartComp = ({
     query: "(min-width: 1920px)",
   });
 
-  const height = isFullHd ? 248 : isDesktopOrLaptop ? 218 : 188;
+  const height = isFullHd ? 248 : isDesktopOrLaptop ? 208 : 188;
   const options = {
     chart: {
       type: "bar",
