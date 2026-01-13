@@ -1,23 +1,21 @@
 import { Check, CheckCheck } from "lucide-react";
 
-interface ChatMessageProps {
-  type: "customer" | "assistant";
-  sender?: string;
-  subtitle?: string;
-  message: string;
-  time: string;
+interface ChatMessageProps  {
+  type: "user_message" | "assistant_message";
+  author?: string;
+  content: string;
+  timestamp: string;
   read?: boolean;
 }
 
 export default function ChatMessage({
   type,
-  sender,
-  subtitle,
-  message,
-  time,
+  author,
+  content,
+  timestamp,
   read = true,
 }: ChatMessageProps) {
-  const isCustomer = type === "customer";
+  const isCustomer = type === "user_message";
 
   return (
     <div
@@ -30,17 +28,16 @@ export default function ChatMessage({
             : "bg-[#E1F2FD]/20 px-3 py-2 rounded-2xl rounded-br-none border-2 "
         }`}
       >
-        {sender && (
+        {author && (
           <div className="font-montserrat font-semibold text-white/50 font-size-sm mb-1">
-            <span>{sender}</span>
-            {subtitle && <span> - {subtitle}</span>}
+            <span>{author}</span>
           </div>
         )}
         <p className="font-montserrat font-normal font-size-sm break-words whitespace-pre-wrap">
-          {message}
+          {content}
         </p>
         <div className="flex items-center justify-end gap-1 mt-2">
-          <span className="font-montserrat font-normal text-xs">{time}</span>
+          <span className="font-montserrat font-normal text-xs">{timestamp}</span>
           {isCustomer &&
             (read ? (
               <CheckCheck strokeWidth={1.5} className="w-4 h-4" />

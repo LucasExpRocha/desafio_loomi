@@ -2,83 +2,62 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AppToast } from "@/lib/toast";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import AISuggestion from "./_components/AISuggestion";
 import ChatInput from "./_components/ChatInput";
 import ChatMessage from "./_components/ChatMessage";
+import { useQuery } from "@tanstack/react-query";
+import { chatService } from "@/app/services/chat.service";
 
-interface Message {
-  id: string;
-  type: "customer" | "assistant" | "ai-suggestion";
-  sender?: string;
-  subtitle?: string;
-  message: string;
-  time: string;
+interface Message extends ChatIAMessage {
   read?: boolean;
-  actions?: { label: string }[];
+  actions?: ChatIAActionItem[];
 }
 
-const initialMessages: Message[] = [
-  {
-    id: "1",
-    type: "customer",
-    sender: "Ricardo Leite",
-    subtitle: "Seguro Automóvel",
-    message: "Oi! Tudo certo? Gostaria de saber sobre o seguro automóvel",
-    time: "12:23",
-    read: true,
-  },
-  {
-    id: "2",
-    type: "assistant",
-    sender: "Assistente",
-    message:
-      "Oi, Ricardo! Tudo ótimo e com você? Claro que sim, posso te ajudar com o que precisar. Vi aqui que você tá com a gente há 6 meses com o seguro de automóvel, é isso mesmo?",
-    time: "12:23",
-  },
-  {
-    id: "3",
-    type: "customer",
-    sender: "Ricardo Leite",
-    subtitle: "Seguro Automóvel",
-    message:
-      "Isso! Mas agora fiquei pensando... tem alguma coisa além disso? Tipo, pros meus equipamentos",
-    time: "12:23",
-    read: true,
-  },
-  {
-    id: "4",
-    type: "ai-suggestion",
-    message:
-      "Baseado no perfil do cliente, recomendo a oferta Premium com desconto de 15%. Cliente tem histórico positivo.",
-    time: "12:23",
-    actions: [
-      { label: "Enviar proposta" },
-      { label: "Fazer ligação" },
-      { label: "Ver histórico" },
-    ],
-  },
-];
-
 export default function ChatAssistenteVirtual() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [localMessages, setLocalMessages] = useState<Message[]>([]);
+
+  const { data, isLoading } = useQuery<ChatIA>({
+    queryKey: ["chat-ia"],
+    queryFn: chatService.getChat,
+    structuralSharing: true,
+    retry: 2,
+    retryDelay: 1000,
+    refetchInterval: 5 * 1000,
+  });
+
+  const messages = useMemo(() => {
+    if (isLoading || !data?.messages || data.messages.length === 0) {
+      return [];
+    }
+
+    const actions = data.conversationAnalysis.futureSteps.actions || [];
+
+    const apiMessages = data.messages.map((msg) => ({
+      id: msg.id,
+      type: msg.type,
+      author: msg.author,
+      content: msg.content,
+      timestamp: msg.timestamp,
+      read: msg.type === "user_message",
+      actions: msg.type === "ai_suggestion" ? actions : undefined,
+    }));
+
+    return [...apiMessages, ...localMessages];
+  }, [data, isLoading, localMessages]);
 
   const handleSendMessage = (text: string) => {
     const newMessage: Message = {
       id: Date.now().toString(),
-      type: "assistant",
-      sender: "Assistente",
-      message: text,
-      time: new Date().toLocaleTimeString("pt-BR", {
+      type: "assistant_message",
+      author: "Assistente",
+      content: text,
+      timestamp: new Date().toLocaleTimeString("pt-BR", {
         hour: "2-digit",
         minute: "2-digit",
       }),
     };
-    setMessages([...messages, newMessage]);
-  };
-
-  const handleAction = (action: string) => {
-    AppToast("info", "Ação executada", `Você clicou em: ${action}`);
+    setLocalMessages((prev) => [...prev, newMessage]);
   };
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -99,15 +78,16 @@ export default function ChatAssistenteVirtual() {
             </div>
 
             {messages.map((msg) =>
-              msg.type === "ai-suggestion" ? (
+              msg.type === "ai_suggestion" ? (
                 <AISuggestion
                   key={msg.id}
-                  suggestion={msg.message}
-                  time={msg.time}
+                  suggestion={msg.content}
+                  timestamp={msg.timestamp}
                   actions={
                     msg.actions?.map((a) => ({
-                      label: a.label,
-                      onClick: () => handleAction(a.label),
+                      id: a.id,
+                      action: a.action,
+                      priority: a.priority,
                     })) || []
                   }
                 />
@@ -115,10 +95,9 @@ export default function ChatAssistenteVirtual() {
                 <ChatMessage
                   key={msg.id}
                   type={msg.type}
-                  sender={msg.sender}
-                  subtitle={msg.subtitle}
-                  message={msg.message}
-                  time={msg.time}
+                  author={msg.author}
+                  content={msg.content}
+                  timestamp={msg.timestamp}
                   read={msg.read}
                 />
               )
