@@ -29,7 +29,7 @@ export default function Header() {
   const pathname = usePathname();
   const cfg = configs[pathname] ?? { title: "Dashboard" };
   return (
-    <header className={cn("w-full h-[64px] md:h-[80px] 2xl:h-[88px]  bg-secondary-background flex items-center justify-between px-6 md:px-10 fixed z-10")}>
+    <header className={cn("w-full h-[64px] 2xl:h-[72px] 3xl:h-[88px]  bg-secondary-background flex items-center justify-between px-6 md:px-10 fixed z-10")}>
       <h1 className="font-montserrat text-ternary-color margin-left-layout font-size-lg font-semibold ">
         {cfg.title}
       </h1>

@@ -129,7 +129,7 @@
 }
 
 @utility select-filter {
-  @apply font-inter rounded-full bg-background px-2 py-2 font-size-sm text-primary-color outline-none focus:border-blue-500;
+  @apply font-inter rounded-full bg-background p-1.5 3xl:p-2 font-size-sm text-primary-color outline-none focus:border-blue-500;
 }
 
 @utility table-header {

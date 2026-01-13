@@ -65,7 +65,7 @@ export default function CardsHeader({
     <header className="grid grid-cols-4 gap-4 2xl:gap-6 max-md:grid-cols-2 w-full">
       {list.map((metric) => (
         <div
-          className="flex flex-col justify-between gap-8 card w-full"
+          className="flex flex-col justify-between gap-2 3xl:gap-8 card w-full"
           key={metric.title || ""}
         >
           <h3 className="font-montserrat font-size-sm text-ternary-color">

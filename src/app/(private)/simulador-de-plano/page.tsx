@@ -23,7 +23,7 @@ export default function SimuladorDePlano() {
 
   return (
     <div className="flex flex-col gap-6 pr">
-      <div className="grid grid-cols-[62fr_35fr] gap-6 2xl:gap-8">
+      <div className="grid grid-cols-[62fr_35fr] gap-6 3xl:gap-8">
         <PlanosPersonalizados
           plansIndicators={data?.plansIndicators || []}
           isLoading={showSkeleton}

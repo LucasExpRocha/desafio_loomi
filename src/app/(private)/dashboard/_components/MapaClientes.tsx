@@ -277,13 +277,13 @@ export default function MapaClientes() {
         </div>
 
         {isLoadingMapLocations ? (
-          <div className="relative h-[200px] 2xl:h-[260px] rounded-xl overflow-hidden">
+          <div className="relative h-[200px] 3xl:h-[260px] rounded-xl overflow-hidden">
             <Skeleton className="w-full h-full bg-white/10" />
           </div>
         ) : (
           <div
             ref={containerRef}
-            className="h-[200px] 2xl:h-[260px] w-full rounded-xl overflow-hidden shadow-inner bg-[#0a0f1c] relative"
+            className="h-[200px] 3xl:h-[260px] w-full rounded-xl overflow-hidden shadow-inner bg-[#0a0f1c] relative"
           >
             <div className="absolute inset-0 pointer-events-none bg-blue-900/10 mix-blend-overlay" />
           </div>

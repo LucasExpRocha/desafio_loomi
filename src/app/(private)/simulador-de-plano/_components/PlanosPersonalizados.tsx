@@ -51,8 +51,8 @@ export default function PlanosPersonalizados({
   ];
 
   return (
-    <section className="card flex flex-col gap-10">
-      <div className="flex flex-col gap-6 w-full">
+    <section className="card flex flex-col gap-6 3xl:gap-10">
+      <div className="flex flex-col gap-3 3xl:gap-6 w-full">
         <h3 className="font-montserrat font-bold font-size-xl text-white">
           Planos Personalizados
         </h3>
@@ -61,7 +61,7 @@ export default function PlanosPersonalizados({
             ? Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className="card w-full space-x-2 xl:space-y-4 2xl:space-y-8"
+                  className="card w-full space-x-2 xl:space-y-4 3xl:space-y-8"
                 >
                   <div className="flex justify-between items-end relative">
                     <Skeleton className="h-5 w-24 bg-white/10" />
@@ -78,7 +78,7 @@ export default function PlanosPersonalizados({
                   key={plan.name}
                   onClick={() => setSelectedPlan(plan.name)}
                   className={cn(
-                    "card w-full space-x-2 xl:space-y-4 2xl:space-y-8 cursor-pointer",
+                    "card w-full space-x-2 xl:space-y-4 3xl:space-y-8 cursor-pointer",
                     selectedPlan === plan.name && "border-[#1876D2]"
                   )}
                 >
