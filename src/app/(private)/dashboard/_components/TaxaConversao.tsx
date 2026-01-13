@@ -1,6 +1,8 @@
 "use client";
 
 import { dashboardService } from "@/app/services/dashboard.service";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
@@ -21,18 +23,43 @@ export default function TaxaConversao() {
 
   return (
     <div className="card pb-0">
-      <div className="flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-6">
+      <div
+        className={cn(
+          "flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-6",
+          {
+            "2xl:mb-16": isLoading,
+          }
+        )}
+      >
         <h3 className="font-montserrat font-bold font-size-xl text-white">
           {"Taxa de conversão"}
         </h3>
       </div>
-      <ChartComp
-        series={data?.kpisTrend?.conversionTrend}
-        labels={data?.kpisTrend?.labels}
-      />
+      {isLoading ? (
+        <ChartSkeleton />
+      ) : (
+        <ChartComp
+          series={data?.kpisTrend?.conversionTrend}
+          labels={data?.kpisTrend?.labels}
+        />
+      )}
     </div>
   );
 }
+
+const ChartSkeleton = () => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+
+  const height = isDesktopOrLaptop ? 248 : 188;
+
+  return (
+    <div className="relative rounded-xl overflow-hidden" style={{ height: `${height}px` }}>
+      <Skeleton className="w-full h-full bg-white/10" />
+    </div>
+  );
+};
 
 const ChartComp = ({
   series,

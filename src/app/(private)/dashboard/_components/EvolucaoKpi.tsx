@@ -7,6 +7,7 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -46,7 +47,7 @@ export default function EvolucaoKpi() {
   return (
     <div className="overflow-hidden relative">
       <span className="block rounded-full absolute w-[200px] h-[200px] bg-gradient-to-br from-[#BDDAFF] to-[#D3ABF440] blur-[150px] top-[-200px] right-[-150px]" />
-      <span className="block rounded-full absolute w-[200px] h-[200px] bg-gradient-to-br from-[#BDDAFF] to-[#D3ABF440] blur-[150px] bottom-[-200px] right-[-150px]" />
+      <span className="block rounded-full absolute w-[200px] h-[200px] bg-gradient-to-br from-[#BDDAFF] to-[#D3ABF440] blur-[150px] bottom-[-200px] left-[-150px]" />
       <div className="card pb-0">
         <div className="flex items-center justify-between gap-6 h-14 mb-2 2xl:mb-16">
           <h3 className="font-montserrat font-bold font-size-xl text-white">
@@ -71,15 +72,36 @@ export default function EvolucaoKpi() {
             })}
           </ul>
         </div>
-        <ChartComp
-          series={data?.kpisTrend?.[selectedOption]}
-          labels={data?.kpisTrend?.labels}
-          isArpu={selectedOption === "arpuTrend"}
-        />
+        {isLoading ? (
+          <ChartSkeleton />
+        ) : (
+          <ChartComp
+            series={data?.kpisTrend?.[selectedOption]}
+            labels={data?.kpisTrend?.labels}
+            isArpu={selectedOption === "arpuTrend"}
+          />
+        )}
       </div>
     </div>
   );
 }
+
+const ChartSkeleton = () => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 1224px)",
+  });
+
+  const height = isDesktopOrLaptop ? 208 : 188;
+
+  return (
+    <div
+      className="relative pb-4 mb-4 rounded-xl overflow-hidden"
+      style={{ height: `${height}px` }}
+    >
+      <Skeleton className="w-full h-full bg-white/10 pb-4 " />
+    </div>
+  );
+};
 
 const ChartComp = ({
   series,
