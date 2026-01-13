@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Desafio Loomi 
 
-## Getting Started
+Interface moderna, buscando proporcionar uma experiência de operador fluida, moderna e responsiva, integrando-se a uma API legado imutável.
 
-First, run the development server:
+## Visão Geral
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Dashboard com gráficos (evolução de KPI, barras de conversão e mapa de clientes).
+- Gestão de tickets com filtros, tabela e ações.
+- Chat IA com atualizações periódicas.
+- Simulador de planos com seleção de opções e ajustes de perfil do cliente.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack Técnica
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Framework: `Next.js 16.1.1 (App Router + Turbopack)`
+- Linguagem: `TypeScript`
+- Estilos: `Tailwind CSS`
+- Estado assíncrono: `@tanstack/react-query`
+- Gráficos: `recharts`
+- Mapas: `ol` (OpenLayers)
 
-## Learn More
+## Requisitos
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js 18+
+- npm 9+ (ou yarn/pnpm equivalente)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Como Rodar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Instalar dependências:
+   ```bash
+   npm install
+   ```
+2. Ambiente: criar `.env.local` com variaveis conforme `env.example`.
+3. Desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+4. Lint:
+   ```bash
+   npm run lint
+   ```
+5. Build de produção:
+   ```bash
+   npm run build
+   ```
+6. Start de produção:
+   ```bash
+   npm run start
+   ```
 
-## Deploy on Vercel
+## Scripts Úteis
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `npm run dev`: inicia servidor de desenvolvimento com Turbopack.
+- `npm run build`: compila para produção.
+- `npm run start`: inicia servidor com build gerado.
+- `npm run lint`: executa linter.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Dashboard
+
+- KPI Trends: gráfico de áreas com múltiplas séries (ARPU, retenção, conversão, churn).
+- Mapa de clientes: OpenLayers, overlay e filtros.
+
+### Simulador de Planos
+
+- Seleção de planos com preços, destaque de recomendado.
+- Benefícios adicionais com custos incrementais.
+- Skeleton no carregamento; após dados, animação de “cards subindo um a um” com GSAP.
+
+### Gestão de Tickets
+
+- Tabela com filtros e paginação.
+- Ações contextuais (ver/editar) e métricas.
+
+### Chat com IA
+
+- Mensagens atualizadas periodicamente via React Query.
+- Componentes de UI pensados para leitura confortável.
+
+## Carregamento Assíncrono e Estabilidade
+
+Para evitar erros de hidratação em SSR/CSR:
+
+- Skeletons visuais ao invés de textos variáveis durante o carregamento.
+- Condicionais client-only em componentes SSR na fase de hidratação.
+
+## Estilos e Tema
+
+- Tailwind configurado em `globals.css`.
+
+## Qualidade e Acessibilidade
+
+- Lint e TypeScript ativos; recomenda-se manter o código sem warnings.
+- ARIA aplicado em elementos interativos (e.g., botões e inputs) e gráficos.
+
+## API Interna
+
+- Endpoints em `src/app/api/*` (e.g., `/api/nortus-v1/dashboard`, `/api/map/locations`, `/api/tickets`).
