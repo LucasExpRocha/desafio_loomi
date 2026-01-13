@@ -1,10 +1,22 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import PlanosPersonalizados from "./PlanosPersonalizados";
+import PlanosPersonalizados from "./_components/PlanosPersonalizados";
 import { formatCurrency } from "@/lib/formatCurrency";
+import { planSimulatorService } from "@/app/services/plan-simulator.service";
+import { useQuery } from "@tanstack/react-query";
 
 export default function SimuladorDePlano() {
+  const { data } = useQuery({
+    queryKey: ["planSimulator"],
+    queryFn: planSimulatorService.getPlans,
+    structuralSharing: true,
+    retry: 2,
+    retryDelay: 1000,
+    staleTime: 10 * 1000,
+    gcTime: 5 * 60 * 1000,
+  });
+
   const benefits = ["Tudo do básico", "Carro reserva", "Vidros"];
   const indicators = [
     {
@@ -30,9 +42,9 @@ export default function SimuladorDePlano() {
   return (
     <div className="flex flex-col gap-6 pr">
       <div className="grid grid-cols-[62fr_35fr] gap-6 2xl:gap-8">
-        <PlanosPersonalizados />
+        <PlanosPersonalizados plansIndicators={data?.plansIndicators || []} />
         <section className="flex flex-col gap-6 2xl:gap-8">
-          <div className="card p-4 xl:p-6 py-10">
+          <div className="card p-4 py-10">
             <h3 className="font-montserrat font-bold font-size-xl text-white mb-8">
               Benefícios Inclusos
             </h3>
@@ -58,8 +70,11 @@ export default function SimuladorDePlano() {
               Indicadores
             </h3>
             {indicators.map((e) => (
-              <div key={e.name} className="flex items-center justify-between card w-full p-4 xl:p-6">
-                <div className="space-y-1">
+              <div
+                key={e.name}
+                className="flex items-center justify-between card w-full p-4 xl:p-6 2xl:p-8"
+              >
+                <div className="space-y-2">
                   <h5 className="font-montserrat font-bold font-size-xl text-white h-8">
                     {e.name}
                   </h5>
@@ -77,7 +92,6 @@ export default function SimuladorDePlano() {
                       </span>
                     </span>
                   </div>
-
                 </div>
                 <div>
                   <h5 className="font-montserrat font-bold font-size-xl text-white">

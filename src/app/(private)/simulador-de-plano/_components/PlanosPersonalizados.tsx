@@ -3,7 +3,11 @@ import { formatCurrency } from "@/lib/formatCurrency";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
-export default function PlanosPersonalizados() {
+export default function PlanosPersonalizados({
+  plansIndicators,
+}: {
+  plansIndicators: SimulatorPlanIndicator[];
+}) {
   const [selectedPlan, setSelectedPlan] = useState<string>("Intermediário");
   const [vehicleValue, setVehicleValue] = useState<number>(50000);
   const [clientAge, setClientAge] = useState<number>(28);
@@ -14,21 +18,11 @@ export default function PlanosPersonalizados() {
     fenomenos: false,
   });
 
-  const plans = [
-    {
-      name: "Plano Básico",
-      price: 89.9,
-    },
-    {
-      name: "Intermediário",
-      price: 145.9,
-    },
-    {
-      name: "Premium",
-      price: 225.9,
-      recommended: true,
-    },
-  ];
+  const addTotal =
+    (benefits.rouboFurto ? 25 : 0) +
+    (benefits.colisao ? 35 : 0) +
+    (benefits.incendio ? 20 : 0) +
+    (benefits.fenomenos ? 30 : 0);
 
   const aditional = [
     {
@@ -60,7 +54,7 @@ export default function PlanosPersonalizados() {
           Planos Personalizados
         </h3>
         <div className="flex gap-6 w-full">
-          {plans.map((plan) => (
+          {plansIndicators?.map((plan) => (
             <div
               key={plan.name}
               onClick={() => setSelectedPlan(plan.name)}
@@ -73,7 +67,7 @@ export default function PlanosPersonalizados() {
                 <h4 className="font-montserrat font-bold font-size-sm text-white">
                   {plan.name}
                 </h4>
-                {plan.recommended && (
+                {plan.name === "Premium" && (
                   <span
                     className={cn(
                       "font-montserrat text-[#0B1125] font-medium text-xs",
@@ -86,7 +80,11 @@ export default function PlanosPersonalizados() {
                 )}
               </div>
               <p className="font-montserrat font-bold font-size-2xl text-white">
-                {formatCurrency(plan.price)}
+                {formatCurrency(
+                  selectedPlan === plan.name
+                    ? plan.value + addTotal
+                    : plan.value
+                )}
               </p>
               <p className="font-montserrat font-size-sm text-white/60">
                 Por mês
