@@ -8,7 +8,7 @@ import { ChevronDown, XCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-type Mode = "create" | "view";
+type Mode = "create" | "view" | "edit";
 
 type Props = {
   open: boolean;
@@ -61,6 +61,7 @@ export default function TicketFormModal({
   if (!open) return null;
 
   const isView = mode === "view";
+  const isEdit = mode === "edit";
 
   return (
     <div
@@ -77,7 +78,7 @@ export default function TicketFormModal({
             id="ticket-modal-title"
             className="font-space-grotesk font-normal font-size-4xl"
           >
-            {isView ? "Visualizar Ticket" : "Novo Ticket"}
+            {isView ? "Visualizar Ticket" : isEdit ? "Editar Ticket" : "Novo Ticket"}
           </h3>
 
           <button
@@ -98,8 +99,7 @@ export default function TicketFormModal({
           <div className="px-8 pt-6 pb-2 space-y-4">
             <div className="space-y-2">
               <p className="font-inter font-size-sm font-normal text-primary-color ">
-                Preencha os dados abaixo para registrar um novo ticket na
-                plataforma.
+                {isView ? "Visualizando ticket" : isEdit ? "Edite os dados abaixo" : "Preencha os dados abaixo para registrar um novo ticket na plataforma."}
               </p>
               <label className="label-new-ticket">Nome do cliente</label>
               <input
@@ -141,7 +141,7 @@ export default function TicketFormModal({
                 </button>
 
                 {isPrioridadeOpen && !isView && (
-                  <div className="absolute z-10 mt-1 w-full rounded-xl bg-[#171d30] border border-white/[0.1] overflow-hidden">
+                  <div className="absolute z-10 mt-1 w-full rounded-xl bg-[#171d30] border border-white/10 overflow-hidden">
                     {priorities.map((p) => (
                       <button
                         key={p}
@@ -186,7 +186,7 @@ export default function TicketFormModal({
             <button
               type="button"
               onClick={onClose}
-              className="w-32 h-14 border border-[#D9D9D9] rounded-[1.25rem]"
+              className="w-32 h-14 border border-[#D9D9D9] rounded-[1.25rem] cursor-pointer"
             >
               <span className="font-space-grotesk font-medium font-size-sm text-primary-color">
                 {isView ? "Fechar" : "Cancelar"}
@@ -195,6 +195,7 @@ export default function TicketFormModal({
 
             {!isView && (
               <button
+                disabled={isView}
                 type="submit"
                 className={cn(
                   "inline-flex items-center justify-center rounded-[1.25rem] p-3 w-32 h-14",
