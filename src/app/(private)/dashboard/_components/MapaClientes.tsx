@@ -103,7 +103,7 @@ export default function MapaClientes() {
   }
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    if (isLoadingMapLocations || !containerRef.current || mapRef.current) return;
     const base = new TileLayer({
       source: new XYZ({
         url: "https://{a-d}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
@@ -176,7 +176,7 @@ export default function MapaClientes() {
       }
       overlayRef.current?.setPosition(geom.getCoordinates());
     });
-  }, []);
+  }, [isLoadingMapLocations]);
 
   useEffect(() => {
     if (!vectorSourceRef.current || !mapRef.current) return;
