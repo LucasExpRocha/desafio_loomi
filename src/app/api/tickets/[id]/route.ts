@@ -1,5 +1,6 @@
 import { api } from "@/lib/api";
 import { NextRequest, NextResponse } from "next/server";
+import { handleApiError } from "../../api-handler";
 
 export async function PATCH(
   request: NextRequest,
@@ -10,11 +11,8 @@ export async function PATCH(
     const { id } = await context.params;
     const { data } = await api.patch(`/tickets/${id}`, body);
     return NextResponse.json(data);
-  } catch (err: unknown) {
-    const e = err as { response?: { status?: number; data?: unknown } };
-    const status = e.response?.status ?? 500;
-    const payload = e.response?.data ?? { message: "Erro ao atualizar ticket" };
-    return NextResponse.json(payload, { status });
+  } catch (err) {
+    return handleApiError(err, "Erro ao atualizar ticket");
   }
 }
 
@@ -26,10 +24,7 @@ export async function GET(
     const { id } = await context.params;
     const { data } = await api.get(`/tickets/${id}`);
     return NextResponse.json(data);
-  } catch (err: unknown) {
-    const e = err as { response?: { status?: number; data?: unknown } };
-    const status = e.response?.status ?? 500;
-    const payload = e.response?.data ?? { message: "Erro ao obter ticket" };
-    return NextResponse.json(payload, { status });
+  } catch (err) {
+    return handleApiError(err, "Erro ao obter ticket");
   }
 }
