@@ -1,22 +1,7 @@
-import { AppToast } from "@/lib/toast";
+import { fetchClient } from "./fetch-client";
 
 export const dashboardService = {
-  getDashboard: async (): Promise<NortusResponse> => {
-    try {
-      const res = await fetch("/api/nortus-v1/dashboard");
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.message || "Falha ao buscar dashboard");
-      }
-      return res.json();
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Erro ao buscar dashboard";
-
-      AppToast("error", message);
-      throw error;
-    }
-  },
+  getDashboard: () => fetchClient<NortusResponse>("/api/nortus-v1/dashboard"),
 };
-export * from "./dashboard.service";
 
+export * from "./dashboard.service";

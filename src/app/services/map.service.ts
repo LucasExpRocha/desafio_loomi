@@ -1,23 +1,7 @@
-import { AppToast } from "@/lib/toast";
+import { fetchClient } from "./fetch-client";
 
 export const mapService = {
-  getLocations: async (): Promise<MapLocationsReponse> => {
-    try {
-      const res = await fetch("/api/locations");
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.message || "Falha ao buscar locais");
-      }
-      return res.json();
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Erro ao buscar locais";
-
-      AppToast("error", message);
-      throw error;
-    }
-  },
+  getLocations: () => fetchClient<MapLocationsReponse>("/api/locations"),
 };
 
 export * from "./map.service";
-
