@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useTicket } from "@/contexts/TicketContext";
 
 type HeaderAction = {
   label: string;
@@ -27,6 +28,7 @@ const configs: Record<string, HeaderConfig> = {
 
 export default function Header() {
   const pathname = usePathname();
+  const { openModal } = useTicket();
   const cfg = configs[pathname] ?? { title: "Dashboard" };
   return (
     <header className={cn("w-full h-[64px] 2xl:h-[72px] 3xl:h-[88px]  bg-secondary-background flex items-center justify-between px-6 md:px-10 fixed z-10")}>
@@ -44,10 +46,7 @@ export default function Header() {
             )}
             onClick={() => {
               if (pathname === "/gestao-de-tickets") {
-                const event = new CustomEvent("open-ticket-modal", {
-                  detail: { mode: "create" },
-                });
-                window.dispatchEvent(event);
+                openModal("create");
               }
             }}
           >

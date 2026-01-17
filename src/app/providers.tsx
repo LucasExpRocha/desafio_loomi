@@ -4,6 +4,7 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import React from 'react';
+import { TicketProvider } from '@/contexts/TicketContext';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = React.useState(
@@ -28,7 +29,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   if (!isBrowser || !persister) {
     return (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <TicketProvider>{children}</TicketProvider>
+      </QueryClientProvider>
     );
   }
 
@@ -37,7 +40,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       client={queryClient}
       persistOptions={{ persister }}
     >
-      {children}
+      <TicketProvider>{children}</TicketProvider>
     </PersistQueryClientProvider>
   );
 }
