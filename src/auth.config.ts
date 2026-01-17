@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from "next-auth"
+
 const publicRoutes = ["/"]
 
 export const authConfig = {
@@ -8,14 +9,19 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
-       const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+      const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
 
       if (isPublicRoute) {
-        if (isLoggedIn) return true
-        return false
-      } else if (isLoggedIn && nextUrl.pathname === "/") {
-        return Response.redirect(new URL("/dashboard", nextUrl))
+        if (isLoggedIn) {
+          return Response.redirect(new URL("/dashboard", nextUrl))
+        }
+        return true
       }
+
+      if (!isLoggedIn) {
+        return false
+      }
+
       return true
     },
     async jwt({ token, user }) {
