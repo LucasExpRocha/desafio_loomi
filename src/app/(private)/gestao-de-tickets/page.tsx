@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -11,14 +11,15 @@ import { ticketsService } from "@/app/services/tickets.service";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AppToast } from "@/lib/toast";
 import { toast } from "sonner";
+import { useTicket } from "@/contexts/TicketContext";
 
 function GestaoDeTicketsContent() {
-  const [open, setOpen] = useState(false);
+  const { isModalOpen, closeModal, modalMode, selectedTicketId } = useTicket();
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const itemId = searchParams.get("edit") || null;
+  const itemId = searchParams.get("edit") || selectedTicketId || null;
   const viewId = searchParams.get("view") || null;
 
   const { data, isLoading, refetch, isError } = useQuery({
@@ -48,7 +49,7 @@ function GestaoDeTicketsContent() {
         "O ticket foi criado e já está na sua lista."
       );
       refetch();
-      setOpen(false);
+      closeModal();
     },
   });
 
@@ -62,7 +63,7 @@ function GestaoDeTicketsContent() {
         "O ticket foi editado e já está na sua lista."
       );
       refetch();
-      setOpen(false);
+      closeModal();
       router.replace(`${pathname}?edit=${itemId}`);
     },
   });
@@ -77,18 +78,15 @@ function GestaoDeTicketsContent() {
     }
   };
 
-  useEffect(() => {
-    const handler = () => {
-      setOpen(true);
-    };
-    window.addEventListener("open-ticket-modal", handler as EventListener);
-    return () => {
-      window.removeEventListener("open-ticket-modal", handler as EventListener);
-    };
-  }, []);
-
-  const isOpen = open || !!itemId || viewId !== null;
+  const isOpen = isModalOpen || !!itemId || viewId !== null;
   const showSkeleton = isLoading || (!data && !isError);
+
+  const handleCloseModal = () => {
+    closeModal();
+    if (itemId || viewId) {
+      router.push(pathname);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4 2xl:gap-6">
@@ -97,19 +95,9 @@ function GestaoDeTicketsContent() {
       {isOpen && (
         <TicketFormModal
           open={isOpen}
-          mode={!!itemId ? "edit" : viewId ? "view" : "create"}
-          initial={!!itemId ? (editingTicket ?? null) : null}
-          onClose={() => {
-            const params = new URLSearchParams(
-              Array.from(searchParams.entries())
-            );
-            params.delete("view");
-            params.delete("edit");
-            const queryString = params.toString();
-            const url = queryString ? `${pathname}?${queryString}` : pathname;
-            setOpen(false);
-            router.replace(url);
-          }}
+          mode={!!itemId ? "edit" : viewId ? "view" : modalMode}
+          initial={editingTicket || null}
+          onClose={handleCloseModal}
           onSave={handleSave}
         />
       )}
